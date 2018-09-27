@@ -1,9 +1,25 @@
 var counter = 0;
+var delay = 1000;
 
 document.querySelector("#hidden-0").style.display = "block";
 
 var continueBtn = document.querySelector("#continue");
-continueBtn.addEventListener("click", function() {
+
+function countDown (time, interval) {
+	count = -interval;
+	function reset() {
+		count += interval
+		if (count < time) {
+			continueBtn.innerHTML = (time/1000 - count / 1000)
+			setTimeout(reset, interval)
+		}
+		else 
+			continueBtn.innerHTML = "Continue"
+	}
+	reset();
+}
+
+function continueInstr () {
 	++counter;
 	if (counter < max) {
 		var c = document.querySelector("#hidden-" + counter)
@@ -11,4 +27,14 @@ continueBtn.addEventListener("click", function() {
 		window.scrollTop = c.scrollTop
 	}
 	else window.location = "/survey";
-})
+
+	countDown(delay, 1000);
+
+	continueBtn.removeEventListener("click", continueInstr)
+	setTimeout(function() {
+		continueBtn.addEventListener("click", continueInstr)
+	}, delay)
+
+}
+
+continueBtn.addEventListener("click", continueInstr)

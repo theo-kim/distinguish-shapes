@@ -1,11 +1,63 @@
 extends layout
 
+mixin shape(name)
+	case name
+		when "five"
+			include polygons/pentagon.pug
+		when "six"
+			include polygons/hexagon.pug
+		when "seven"
+			include polygons/septagon.pug
+		when "eight"
+			include polygons/octogon.pug
+		when "nine"
+			include polygons/nonagon.pug
+		when "ten"
+			include polygons/decagon.pug
+
 block content
 	div#welcome
 		h1 Instructions
 
 		each line, index in text
-			p(id="hidden-" + index, style="display:none")= line
+			- if (index == 1)
+				div(id="hidden-" + index, style="display:none")
+					p= line
+					div(style="text-align:center;")
+						each type in settings.shapes 
+							+shape(type)
+			- else if (index == 2) 
+				div(id="hidden-" + index, style="display:none")
+					p= line
+					div(style="text-align:center; padding:30px; border: 1px solid #000; margin-bottom: 20px")
+						- for (var i = 0; i < settings.total_n; ++i)
+							- if (i > 0 && i % 8 == 0)
+								br
+							+shape(settings.shapes[Math.floor(Math.random() * settings.n)])
+			- else if (index == 5)
+				div(id="hidden-" + index, style="display:none; margin-bottom: 20px")
+					p= line
+					br
+					div(style="display: flex; align-items: center; justify-content: center; flex-direction:row")
+						- weights = settings["action_weights"].split(":")
+						span(style="margin-right: 10px") the most common shapes
+						div(style="display: flex; align-items: center; justify-content: center; flex-direction:column")
+							span(style="margin-bottom: 10px") the action you choose
+							table#table
+								tr
+									td
+									td Action A
+									td Action B
+									td Action C
+								each shape, i in settings.true_shapes
+									tr
+										td=shape+"-sided"
+										td=weights[i][0]
+										td=weights[i][1]
+										td=weights[i][2]
+								
+			- else 
+				div(id="hidden-" + index, style="display:none")!= line
 
 		button#continue Continue
 

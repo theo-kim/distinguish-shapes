@@ -9,7 +9,8 @@ CREATE TABLE prod_admin (
 	mid_delta       int,
 	mud_delta       int,
 	action_weights  varchar(20),
-	rounds			int
+	rounds			int,
+	max_payout		numeric(3, 2)
 );
 
 CREATE TABLE dev_admin (
@@ -23,5 +24,6 @@ CREATE TABLE dev_admin (
 	mid_delta       int,
 	mud_delta       int,
 	action_weights  varchar(20),
-	rounds			int
+	rounds			int,
+	max_payout		numeric(3, 2)
 );
