@@ -32,6 +32,5 @@ npm-debug.log
 # Bower components
 bower_components
 
-data/endsurveyquestions.json
 data/marketdata.json
 data/marketvalues.json
