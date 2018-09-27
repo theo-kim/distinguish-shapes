@@ -1,0 +1,6 @@
+{
+	"database": {
+		"table": "prod",
+		"devTable": "dev"
+	}
+}
