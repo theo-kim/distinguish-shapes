@@ -5,11 +5,6 @@ let xml = require("xml-parse");
 let db = require('../db.js');
 let moment = require('moment');
 let json2csv = require('json2csv');
-let social = require('../data/social.json');
-let marketdata = require('../data/marketdata.json');
-let questions = require('../data/endsurveyquestions.json');
-let marketvalues = require('../data/marketvalues.json');
-let percentages = require('../data/social.json');
 
 // console.log(marketvalues)
 

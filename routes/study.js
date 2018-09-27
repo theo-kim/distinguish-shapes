@@ -1,11 +1,6 @@
 var express = require('express');
 var router = express.Router();
 
-var finData = require('../data/marketdata.json');
-var abstract = require('../data/abstract.json');
-// var social = require('../data/social.json');
-var marketvalues = require('../data/marketvalues.json');
-var headertext = require('../data/headertext.json');
 
 // Random Social:
 
