@@ -27,13 +27,6 @@ let adminTable = (process.env.DEBUG) ? 'prod_rounds' : 'prod_rounds';
 let ref = ['category_sort', 'fee_sort',	'price_sort', 'first-year_sort', 'fifth-year_sort', 'stock_filter', 'bond_filter', 'money-market_filter', 'balanced_filter', 'international_filter', 'index_filter', 'active_filter', 'above_filter', 'between_filter', 'below_filter'];
 let conditions = ['control', 'tooltip', 'color', 'both'];
 
-let config = {
-    access: 'AKIAIM5RDWIKG2R3D2HA',
-    secret: '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',
-    //real or test
-    sandbox: false
-}
-
 function getMTURKData(api, Hit) {
 	return new Promise(function (resolve, reject) {
 		let assignments = {};
