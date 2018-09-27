@@ -2,9 +2,14 @@ extends layout
 
 block content
 	div#welcome
-		h1 Welcome!
-		h3(style="margin-bottom:50px;") Instructions: Please read carefully
+		h1 Instructions
 
-		div!=text
+		each line, index in text
+			p(id="hidden-" + index, style="display:none")= line
 
-		button#start(onclick="window.location='/survey'") Start Study
+		button#continue Continue
+
+	script.
+		var max = #{size};
+
+	script(src="/javascripts/welcome.js")

@@ -20,6 +20,8 @@ let percentages = require('../data/social.json');
 let userTable = (process.env.DEBUG) ? 'prod_participants' : 'prod_participants';
 let testTable = (process.env.DEBUG) ? 'prod_tests' : 'prod_tests';
 let roundTable = (process.env.DEBUG) ? 'prod_rounds' : 'prod_rounds';
+let adminTable = (process.env.DEBUG) ? 'prod_rounds' : 'prod_rounds';
+
 
 
 let ref = ['category_sort', 'fee_sort',	'price_sort', 'first-year_sort', 'fifth-year_sort', 'stock_filter', 'bond_filter', 'money-market_filter', 'balanced_filter', 'international_filter', 'index_filter', 'active_filter', 'above_filter', 'between_filter', 'below_filter'];

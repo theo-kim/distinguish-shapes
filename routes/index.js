@@ -12,10 +12,10 @@ const api = require('./api/');
 router.use('/api', api);
 
 router.use('/admin', admin);
-router.use('/study', study);
+router.use('/welcome', welcome);
 router.use('/survey', survey);
 router.use('/endsurvey', endsurvey);
 router.use('/result', result);
-router.use('/', welcome);
+router.use('/', study);
 
 module.exports = router;

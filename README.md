@@ -32,4 +32,8 @@ All tables have a development and production version, indicated by the `dev_` or
 	- `mud_delta` (integer): decoy counts will be shifted randomly within range [-mud_delta, mud_delta]
 		- mathematically, `mud_delta <= 1/m * ((N/n) * (n - m) - max_delta - mid_delta)`
 
-* `participants`: This table handles storing all participant relevant data (i.e. survey responses)"# distinguish-shapes" 
+* `participants`: This table handles storing all participant relevant data (i.e. survey responses)
+
+* `tests`: This table handles storing all test relevant data (i.e. time taken)
+
+* `rounds`: This table handles storing all data relevant to single rounds (i.e. selection, right / wrong) 

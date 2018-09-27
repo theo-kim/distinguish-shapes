@@ -24,27 +24,7 @@ block content
 						| &nbsp;&nbsp;&nbsp;
 				td(style="padding:10px;")
 					input#age(type="number", style="width:100px", min="1")
-			tr
-				td(style="padding:10px;text-align:right")
-					label(for="experience", style="font-weight:normal;") What level is your investing experience?
-						| &nbsp;&nbsp;&nbsp;
-				td(style="padding:10px;")
-					select#experience
-						option(disabled selected value="") --select an option--
-						option None
-						option Novice
-						option Intermediate
-						option Expert
-						option Not Sure
-			tr
-				td(style="padding:10px;text-align:right;vertical-align:top")
-					| Do you have a savings plan such as a 401k?
-					| &nbsp;&nbsp;&nbsp;
-				td(style="padding:10px;")
-					select#plan
-						option(disabled selected value="") --select an option--
-						option Yes
-						option No
+
 	script.
 		function next() {
 			var data = {
@@ -54,7 +34,7 @@ block content
 				plan: $("#plan").val()
 			}
 			console.log(data);
-			if (!data.experience || !data.age || !data.plan || !data.gender) {
+			if (!data.age || !data.gender) {
 				alert("Please complete the survey.");
 				return
 			}
