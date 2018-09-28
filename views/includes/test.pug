@@ -1,0 +1,87 @@
+mixin shape(name)
+	case name
+		when "five"
+			include ../polygons/pentagon.pug
+		when "six"
+			include ../polygons/hexagon.pug
+		when "seven"
+			include ../polygons/septagon.pug
+		when "eight"
+			include ../polygons/octogon.pug
+		when "nine"
+			include ../polygons/nonagon.pug
+		when "ten"
+			include ../polygons/decagon.pug
+
+mixin table(settings, scale)
+	- scale = scale || 1.0
+	div(style="display: flex; align-items: center; justify-content: center; flex-direction:row; transform: scale(" + scale + "); margin-bottom: 20px;")
+		- weights = settings["action_weights"].split(":")
+		span(style="margin-right: 10px") the most common shapes
+		div(style="display: flex; align-items: center; justify-content: center; flex-direction:column")
+			span(style="margin-bottom: 10px") the action you choose
+			table#table
+				tr
+					td
+					td Action A
+					td Action B
+					td Action C
+				each shape, i in settings.true_shapes
+					tr
+						td=shape+"-sided"
+						td=weights[i][0]
+						td=weights[i][1]
+						td=weights[i][2]
+
+mixin board(settings)
+	+table(settings, 0.8)
+	div(style="display:flex; flex-direction: row; align-items: center; justify-content: space-between; padding: 30px 100px")
+		span(style="background:#ddd; padding: 5px; border-radius: 4px;") Action A
+		span(style="background:#ddd; padding: 5px; border-radius: 4px;") Action B
+		span(style="background:#ddd; padding: 5px; border-radius: 4px;") Action C
+
+	div(id=name, style="border: 1px solid #000; padding: 20px; text-align:center;")
+		-
+			var m_start = settings.shapes.indexOf(settings["true_shapes"][0]);
+			var m_end = m_start + settings.m;
+			var d_mud = Math.floor(Math.random() * (settings["mud_delta"] - (-1 * settings["mud_delta"])) + (-1 * settings["mud_delta"]));
+			var initial_quantity = Math.floor(settings.total_n / settings.n)
+			var polygon_n = new Array(settings.n).fill(0);
+			for (var i = m_start; i < m_end; ++i) {
+				polygon_n[i] = initial_quantity + d_mud;
+			}
+			var maxed_poly = Math.floor(Math.random() * (m_end - m_start) + m_start);
+			polygon_n[maxed_poly] += settings.max_delta;
+			var midded_poly = maxed_poly;
+			while (midded_poly == maxed_poly)
+				 midded_poly = Math.floor(Math.random() * (m_end - m_start) + m_start);
+			polygon_n[midded_poly] += settings.mid_delta;
+			console.log(midded_poly)
+			var current_sum = polygon_n.reduce((total, num) => { return total + num});
+
+			var decoy_n = Math.floor((settings.total_n - current_sum) / (settings.n - settings.m));
+			var remainder = settings.total_n - (current_sum + decoy_n * (settings.n - settings.m))
+			for (var i = 0; i < m_start; ++i) {
+				polygon_n[i] = decoy_n + ((remainder > 0) ? 1 : 0)
+				--remainder;
+			}
+			for (var i = m_end; i < settings.n; ++i) {
+				polygon_n[i] = decoy_n + ((remainder > 0) ? 1 : 0)
+				--remainder;
+			}
+			console.log(polygon_n)
+
+		- for (var i = 0; i < settings.total_n; ++i)
+
+			- if (i % 8 == 0 && i > 0)
+				br
+			- var selected_poly = Math.floor(Math.random() * settings.n); 
+			- while(polygon_n[selected_poly] <= 0) {
+				- selected_poly = Math.floor(Math.random() * settings.n);
+			- }
+			- polygon_n[selected_poly]--;
+			+shape(settings.shapes[selected_poly])
+		
+	//- script(src="/javascripts/test.js")
+	//- script.
+	//- 	generateShapes(name)

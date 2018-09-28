@@ -1,5 +1,7 @@
 extends layout
 
+include includes/test.pug
+
 mixin shape(name)
 	case name
 		when "five"
@@ -38,26 +40,13 @@ block content
 				div(id="hidden-" + index, style="display:none; margin-bottom: 20px")
 					p= line
 					br
-					div(style="display: flex; align-items: center; justify-content: center; flex-direction:row")
-						- weights = settings["action_weights"].split(":")
-						span(style="margin-right: 10px") the most common shapes
-						div(style="display: flex; align-items: center; justify-content: center; flex-direction:column")
-							span(style="margin-bottom: 10px") the action you choose
-							table#table
-								tr
-									td
-									td Action A
-									td Action B
-									td Action C
-								each shape, i in settings.true_shapes
-									tr
-										td=shape+"-sided"
-										td=weights[i][0]
-										td=weights[i][1]
-										td=weights[i][2]
-								
+					+table(settings)
+			- else if (index == 8)
+				div(id="hidden-" + index, style="display:none;margin-bottom: 20px")
+					p= line
+					+board(settings)
 			- else 
-				div(id="hidden-" + index, style="display:none")!= line
+				div(id="hidden-" + index, style="display:none;margin-bottom: 20px")!= line
 
 		button#continue Continue
 
