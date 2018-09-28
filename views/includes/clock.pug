@@ -1,0 +1,17 @@
+div#timedate
+	br
+	a#h 12 :
+	a#m 00 :
+	a#s 00 :
+	a#mi 000
+
+	br
+	br
+	span#stop(style="background:#ddd; padding: 5px; border-radius: 4px; cursor: pointer") Stop the Clock
+	| &nbsp;&nbsp;
+	span#start(style="background:#ddd; padding: 5px; border-radius: 4px; cursor: pointer") Start the Clock
+
+script(src="/javascripts/clock.js")
+
+script.
+	initClock()

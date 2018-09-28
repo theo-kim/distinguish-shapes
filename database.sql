@@ -27,3 +27,15 @@ CREATE TABLE dev_admin (
 	rounds			int,
 	max_payout		numeric(3, 2)
 );
+
+CREATE TABLE prod_prob (
+	id              SERIAL,
+	prob.           int,
+	n               int
+);
+
+CREATE TABLE dev_prob (
+	id              SERIAL,
+	prob            int,
+	n               int
+);

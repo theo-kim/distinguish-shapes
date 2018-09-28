@@ -4,6 +4,7 @@ var welcometext = require('../data/welcometext.json');
 var db = require('../db.js');
 
 var adminTable = (process.env.DEBUG) ? 'dev_admin' : 'prod_admin';
+var probTable = (process.env.DEBUG) ? 'dev_prob' : 'prod_prob';
 
 var i, j;
 
@@ -51,20 +52,23 @@ function maxInString(str) {
 router.get('/', (req, res, next) => {
 	db.select("*").from(adminTable).orderBy('id', 'desc').first()
 		.then((settings) => {
-			settings["n-m"] = settings.n - settings.m;
-			settings["polygons_text"] = translatePolyString(settings.polygons);
-			settings["true_polygons_text"] = translatePolyString(settings["true_polygons"]);
-			settings["shapes"] = shapes(settings.polygons);
-			settings["true_shapes"] = shapes(settings["true_polygons"]);
+			db.select("*").from(probTable).orderBy('prob', 'desc').then((prob) => {
+				settings["n-m"] = settings.n - settings.m;
+				settings["polygons_text"] = translatePolyString(settings.polygons);
+				settings["true_polygons_text"] = translatePolyString(settings["true_polygons"]);
+				settings["shapes"] = shapes(settings.polygons);
+				settings["true_shapes"] = shapes(settings["true_polygons"]);
+				settings.probabilities = prob;
 
-			for (i in welcometext)
-				for (j in settings)
-					welcometext[i] = welcometext[i].split("{{" + j + "}}").join(settings[j]);
+				for (i in welcometext)
+					for (j in settings)
+						welcometext[i] = welcometext[i].split("{{" + j + "}}").join(settings[j]);
 
-			console.log(settings)
+				console.log(settings)
 
-			res.cookie('round', 1, { maxAge : 8.64e7 });
-			res.render('welcome', { text: welcometext, size: Object.keys(welcometext).length, settings: settings });
+				res.cookie('round', 1, { maxAge : 8.64e7 });
+				res.render('welcome', { text: welcometext, size: Object.keys(welcometext).length, settings: settings });
+			})
 		});
 
 	// let min = 0, max = 4;

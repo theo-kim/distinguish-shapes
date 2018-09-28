@@ -12,6 +12,12 @@ body {
 	font: @default-font-size "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
+#timedate {
+	text-align: center;
+	a { text-decoration: none; cursor: default; font-size: 24px; }
+	a:hover { text-decoration: none }
+}
+
 .error {
 	color: @error; 
 }
@@ -71,8 +77,10 @@ button#next {
 
 // Welcome page
 div#welcome {
-	padding: 50px 100px;
+	padding: 50px 0px;
 	line-height: 1.4em;
+	margin: 0 auto;
+	max-width: 1000px;
 
 	// Start button
 	button#start, button#continue {

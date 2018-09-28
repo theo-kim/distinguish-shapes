@@ -5,6 +5,11 @@ document.querySelector("#hidden-0").style.display = "block";
 
 var continueBtn = document.querySelector("#continue");
 
+function initClock() {
+  updateClock();
+  window.setInterval("updateClock()", 1);
+}
+
 function countDown (time, interval) {
 	count = -interval;
 	function reset() {
@@ -24,7 +29,7 @@ function continueInstr () {
 	if (counter < max) {
 		var c = document.querySelector("#hidden-" + counter)
 		c.style.display = "block";
-		window.scrollTop = c.scrollTop
+		window.scroll(0, document.body.scrollHeight);
 	}
 	else window.location = "/survey";
 

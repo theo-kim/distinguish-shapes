@@ -1,0 +1,40 @@
+mixin pentagon(rot)
+	svg(xmlns="http://www.w3.org/2000/svg", xmlns:xlink="http://www.w3.org/1999/xlink" ,width="80",height="80",viewbox="0 0 105 105",style="padding: 10px")
+		polygon(points="52,2 102,42 82,102 22,102 2,42", style="stroke:#000;fill:none", transform="rotate(" + rot + " 52.5 52.5)")
+	//- 50% 0%, 100% 40%, 80% 100%, 20% 100%, 0% 40%
+
+mixin hexagon(rot) 
+	svg(xmlns="http://www.w3.org/2000/svg", xmlns:xlink="http://www.w3.org/1999/xlink" ,width="80",height="80",viewbox="0 0 105 105",style="padding: 10px; ")
+		polygon(class="hex", points="100,50 75,95 25,95 0,50 25,5 75,5", style="stroke:#000;fill:none;", transform="rotate(" + rot + " 52.5 52.5)")
+
+mixin septagon(rot)
+	svg(xmlns="http://www.w3.org/2000/svg", xmlns:xlink="http://www.w3.org/1999/xlink" ,width="80",height="80",viewbox="0 0 105 105",style="padding: 10px")
+		polygon(class="hex", points="52,2 92,22 102,62 77,102 27,102 2,62 12,22", style="stroke:#000;fill:none", transform="rotate(" + rot + " 52.5 52.5)")
+
+mixin octogon(rot)
+	svg(xmlns="http://www.w3.org/2000/svg", xmlns:xlink="http://www.w3.org/1999/xlink" ,width="80",height="80",viewbox="0 0 105 105",style="padding: 10px")
+		polygon(class="hex", points="32,2 72,2 102,32 102,72 72,102 32,102 2,72 2,32", style="stroke:#000;fill:none", transform="rotate(" + rot + " 52.5 52.5)")
+
+mixin nonagon(rot)
+	svg(xmlns="http://www.w3.org/2000/svg", xmlns:xlink="http://www.w3.org/1999/xlink" ,width="80",height="80",viewbox="0 0 105 105",style="padding: 10px")
+		polygon(class="hex", points="68.3,99.3 34.5,99.3 8.7,77.6 2.8,44.3 19.7,15.1 51.4,3.5 83.1,15.1 100,44.3 94.1,77.6", style="stroke:#000;fill:none", transform="rotate(" + rot + " 52.5 52.5)")
+
+mixin decagon(rot)
+	svg(xmlns="http://www.w3.org/2000/svg", xmlns:xlink="http://www.w3.org/1999/xlink",width="80",height="80",viewbox="0 0 105 105",style="padding: 10px")
+		polygon(xmlns="http://www.w3.org/2000/svg", points="65.5,0.3 90.5,18.4 100,47.7 90.5,77 65.5,95.2 34.7,95.2 9.7,77 0.2,47.7 9.7,18.4 34.7,0.3",fill="none", stroke="black", stroke-width="1", transform="rotate(" + rot + ")")
+	//- (30% 0, 70% 0, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0 70%, 0 30
+
+mixin shape(name)
+	case name
+		when "five"
+			+pentagon(Math.round(Math.random() * 360))
+		when "six"
+			+hexagon(Math.round(Math.random() * 360))
+		when "seven"
+			+septagon(Math.round(Math.random() * 360))
+		when "eight"
+			+octogon(Math.round(Math.random() * 360))
+		when "nine"
+			+nonagon(Math.round(Math.random() * 360))
+		when "ten"
+			+decagon(Math.round(Math.random() * 360))
