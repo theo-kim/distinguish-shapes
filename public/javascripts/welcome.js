@@ -31,7 +31,7 @@ function continueInstr () {
 		c.style.display = "block";
 		window.scroll(0, document.body.scrollHeight);
 	}
-	else window.location = "/survey";
+	else window.location = "/practice";
 
 	countDown(delay, 1000);
 

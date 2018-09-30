@@ -1,0 +1,28 @@
+extends layout.pug
+
+include includes/test.pug
+
+block content
+	div#welcome
+		+board(settings, prob)
+
+	script.
+		function advance() {
+			var curr = parseInt($.cookie("round"));
+			$.cookie("round", curr + 1);
+			location.reload();
+		}
+
+		var actions = document.querySelectorAll(".actions");
+		payouts = nums.split(":")
+
+		var maxShape = (Math.max.apply(Math, polygon_numbers.slice(1, -1)));
+		maxShape = polygon_numbers.slice(1, -1).indexOf(maxShape)
+
+		for (var i = 0; i < actions.length; ++i) {
+			actions[i].addEventListener("click", function(e) {
+				alert("There were more " + shape_names[maxShape] + "-sided shapes. Your payout would have been: $" + payouts[e.target.dIndex][maxShape])
+				advance()
+			}, false);
+			actions[i].dIndex = i;
+		}

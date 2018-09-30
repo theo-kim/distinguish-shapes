@@ -1,52 +1,36 @@
 var express = require('express');
 var router = express.Router();
-
-
-// Random Social:
-
-function getRandomInt(max) {
-  return Math.floor(Math.random() * Math.floor(max));
-}
+var settingsM = require('../settings.js');
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
-	if (!req.cookies.round || !req.cookies.rand) { 
+	if (!req.cookies.round) { 
 		next();
 	}
 	else {
-		social = {}
-		social[parseInt(req.cookies.round)] = {
-			category: getRandomInt(100),
-			fee: getRandomInt(100),
-			price: getRandomInt(100),
-			'first-year': getRandomInt(100),
-			'fifth-year': getRandomInt(100),
-		};
-
-
-		let arr = Object.values(social[parseInt(req.cookies.round)]);
-		let min = Math.min(...arr);
-		let max = Math.max(...arr);
-
-		social[parseInt(req.cookies.round)]['sort-max'] = max;
-		social[parseInt(req.cookies.round)]['sort-min'] = min;
-
-		console.log(arr)
-
-		if (parseInt(req.cookies.round) < 10) 
-			res.render('study', {
-				data: finData,
-				round: parseInt(req.cookies.round),
-				social: social,
-				rand: parseInt(req.cookies.rand),
-				test: req.cookies.test,
-				user: req.cookies.user,
-				marketvalues: marketvalues,
-				text: headertext[parseInt(req.cookies.rand)],
-				retur: parseFloat(req.cookies.return)
-			});
-		else
-			res.redirect('/endsurvey');
+		settingsM().then(function(settings) {
+			if (parseInt(req.cookies.round) > settings.rounds) { 
+				res.redirect('/end');
+			}
+			else {
+				var choices
+				if (!req.cookies.probs) choices = settings.probabilities;
+				else choices = JSON.parse(req.cookies.probs)
+				res.cookie('round_start', (new Date()).toString(), { maxAge : 8.64e7 });
+				
+				var prob = 0;
+				var probs = Object.keys(choices);
+				do {
+					prob = Math.floor(Math.random() * probs.length)
+				} while (settings.probabilities[probs[prob]] == 0)
+				res.cookie('probs', JSON.stringify(choices));
+				res.render('study', {
+					settings: settings,
+					prob: probs[prob],
+					round: parseInt(req.cookies.round)
+				});
+			}
+		});
 	}
 });
 
