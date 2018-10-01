@@ -15,9 +15,9 @@ mixin table(settings, scale)
 	- scale = scale || 1.0
 	div(style="display: flex; align-items: center; justify-content: center; flex-direction:row; transform: scale(" + scale + "); margin-bottom: 20px;")
 		- weights = settings["action_weights"].split(":")
-		span(style="margin-right: 10px") the most common shapes
+		span(style="margin-right: 10px") The most common shape.
 		div(style="display: flex; align-items: center; justify-content: center; flex-direction:column")
-			span(style="margin-bottom: 10px") the action you choose
+			span(style="margin-bottom: 10px") The action you choose.
 			table#table
 				tr
 					td
@@ -27,9 +27,9 @@ mixin table(settings, scale)
 				each shape, i in settings.true_shapes
 					tr
 						td=shape+"-sided"
-						td=weights[0][i]
-						td=weights[1][i]
-						td=weights[2][i]
+						td(style="text-align:center;")="$" + weights[0][i]
+						td(style="text-align:center;")="$" + weights[1][i]
+						td(style="text-align:center;")="$" + weights[2][i]
 
 mixin board(settings, prob)
 	+table(settings, 0.8)
@@ -37,7 +37,7 @@ mixin board(settings, prob)
 	- if (prob > -1)
 		div(style="text-align:center; margin-bottom: 20px;") This round has a 
 			b #{prob}%&nbsp;
-			| chance of for being selected for final payment.
+			| chance of being selected for final payment.
 			br
 			| In case it is selected for final payment, payoffs are determined by the table above depending on your action and on which of the three shapes are most common 
 

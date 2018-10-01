@@ -13,13 +13,18 @@ router.get('/', (req, res, next) => {
 				res.redirect('/end');
 			}
 			else {
-				var choices
-				if (!req.cookies.probs) choices = settings.probabilities;
+				var choices = {}
+				if (!req.cookies.probs || parseInt(req.cookies.probs) == 0) {
+					for (var i = 0; i < settings.probabilities.length; ++i) {
+						choices[settings.probabilities[i].prob] = settings.probabilities[i].n;
+					}
+				}
 				else choices = JSON.parse(req.cookies.probs)
 				res.cookie('round_start', (new Date()).toString(), { maxAge : 8.64e7 });
-				
 				var prob = 0;
 				var probs = Object.keys(choices);
+								console.log(choices)
+
 				do {
 					prob = Math.floor(Math.random() * probs.length)
 				} while (settings.probabilities[probs[prob]] == 0)
