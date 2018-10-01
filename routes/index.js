@@ -8,6 +8,7 @@ const welcome = require('./welcome.js');
 const practice = require('./practice.js');
 const result = require('./result.js');
 const end = require('./end.js');
+const getdata = require('./getdata.js');
 const api = require('./api/');
 
 router.use('/api', api);
@@ -18,6 +19,7 @@ router.use('/survey', survey);
 router.use('/practice', practice);
 router.use('/result', result);
 router.use('/end', end);
+router.use('/data.csv', getdata);
 router.use('/', study);
 
 module.exports = router;
