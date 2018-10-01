@@ -58,7 +58,7 @@ function saveSettings() {
 	}
 
 	console.log(JSON.stringify(prob));
-	
+
 	data["probabilities"] = JSON.stringify(prob)
 	data["action_weights"] = actions.join(":")
 	data["max_payout"] = maxPayout
@@ -131,7 +131,7 @@ function editProbs(event) {
 function newProbs() {
 	var t = document.querySelector(".prob-table");
 	var r = document.createElement("tr");
-	r.innerHTML = "<td style='text-align:right;'><input type='text' style='max-width:30px'> %</td><td style='text-align:center;'><input type='text' style='max-width:30px'></td>";
+	r.innerHTML = "<td style='text-align:right;'><input type='text' style='max-width:30px' class='prob-cell'> %</td><td style='text-align:center;'><input class='prob-n-cell' type='text' style='max-width:30px'></td>";
 
 	t.appendChild(r);
 }

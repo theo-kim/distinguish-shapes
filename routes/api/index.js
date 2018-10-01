@@ -95,21 +95,37 @@ router.post("/admin", (req, res, next) => {
 });
 
 router.post("/participant", (req, res, next) => {
-	var data = {
-		age: req.body.age,
-		gender: req.body.gender,
-		"welcome_time": (new Date()).getTime()- Date.parse(req.cookies["start"])
-	}
+	iplocation(req.connection.remoteAddress, function (error, ip) {
+		var city, country;
 
-	db(userTable).insert(data).returning('id').then((id) => {
-		res.cookie('start_test', (new Date()).toString(), { maxAge : 8.64e7 });
-		res.cookie('user_id', id[0], { maxAge : 8.64e7 });
-		db(testTable).insert({userid: id[0], "total_payout": 0}).returning('id').then((testid) => {
-			res.cookie('test_id', testid[0], { maxAge : 8.64e7 });
-			res.cookie('total_payout', 0, { maxAge : 8.64e7 });
-			res.send("success");
-		});
-	})
+		if (error) {
+			city = "blocked";
+			country = "blocked";
+		}
+		else {
+			city = ip.city;
+			country = ip.country;
+		}
+
+		var data = {
+			age: req.body.age,
+			gender: req.body.gender,
+			"welcome_time": (new Date()).getTime()- Date.parse(req.cookies["start"]),
+			ipaddress: req.connection.remoteAddress,
+			city: city,
+			country: country
+		}
+
+		db(userTable).insert(data).returning('id').then((id) => {
+			res.cookie('start_test', (new Date()).toString(), { maxAge : 8.64e7 });
+			res.cookie('user_id', id[0], { maxAge : 8.64e7 });
+			db(testTable).insert({userid: id[0], "total_payout": 0}).returning('id').then((testid) => {
+				res.cookie('test_id', testid[0], { maxAge : 8.64e7 });
+				res.cookie('total_payout', 0, { maxAge : 8.64e7 });
+				res.send("success");
+			});
+		})
+	});
 });
 
 router.post("/round", (req, res, next) => {
@@ -119,7 +135,8 @@ router.post("/round", (req, res, next) => {
 		duration: (new Date()).getTime()- Date.parse(req.cookies["round_start"]),
 		payout: req.body.payout,
 		polygons: req.body.polygons,
-		prob: req.body.prob
+		prob: req.body.prob,
+		mudding: req.body.mudding
 	}
 
 	db(roundTable).insert(data).returning('id').then((id) => {
@@ -143,10 +160,11 @@ router.post("/end", (req, res, next) => {
 			})
 			counter += rounds[i].prob
 		}
-		console.log(intervals)
+		var duration = (new Date()).getTime()- Date.parse(req.cookies["start_test"]);
+		var ending = (new Date());
 		for (var i = 0; i < intervals.length; ++i) {
 			if (roll > intervals[i].start && roll <= intervals[i].end) {
-				db(testTable).update("final_payout", intervals[i].payout).where("id", parseInt(req.cookies["test_id"])).then(() => {
+				db(testTable).update({ "final_payout": intervals[i].payout, "duration": duration, ending: ending }).where("id", parseInt(req.cookies["test_id"])).then(() => {
 					res.send("success");
 				});
 			}

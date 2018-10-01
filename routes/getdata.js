@@ -6,16 +6,15 @@ let moment = require('moment');
 let json2csv = require('json2csv');
 let fs = require('fs');
 
-let u = (process.env.DEBUG) ? 'prod_participants' : 'prod_participants';
-let t = (process.env.DEBUG) ? 'prod_tests' : 'prod_tests';
-let r = (process.env.DEBUG) ? 'prod_rounds' : 'prod_rounds';
+let u = (process.env.DEBUG) ? 'dev_participants' : 'prod_participants';
+let t = (process.env.DEBUG) ? 'dev_tests' : 'prod_tests';
+let r = (process.env.DEBUG) ? 'dev_rounds' : 'prod_rounds';
 
 router.get('/', (req, res, next) => {
 	let columnLabel = {}
 	let out = []
 	let currTest = -1;
 	let firstRound = -1;
-			console.log("go fuck yourself")
 
 	let selectionRef = ["Action A", "Action B", "Action C"]
 
@@ -23,7 +22,7 @@ router.get('/', (req, res, next) => {
 		.orderBy(r + '.id', 'asc')
 		.then((rows) => {
 			columnLabel = [
-				"testid", "round", "test_duration", "round_duration", "selection", "probability", "age", "gender", "final_payout", "surveycode", "welcome_time"  
+				"testid", "round", "test_duration", "round_duration", "mudding", "selection", "probability", "age", "gender", "final_payout", "surveycode", "welcome_time", "ipaddress", "city", "country", "start", "ending"  
 			]
 			for (let i = 0; i < rows.length; ++i) {
 				if (rows[i].userid != currTest) {

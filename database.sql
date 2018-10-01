@@ -44,7 +44,11 @@ CREATE TABLE prod_participants (
 	id              SERIAL,
 	gender          varchar(10),
 	age             int,
-	welcome_time    int
+	welcome_time    int,
+	surveycode      varchar(200),
+	ipaddress       varchar(50),
+	city            varchar(100),
+	country         varchar(100)
 );
 
 CREATE TABLE dev_participants (
@@ -52,7 +56,10 @@ CREATE TABLE dev_participants (
 	gender          varchar(10),
 	age             int,
 	welcome_time    int,
-	surveycode      varchar(200)
+	surveycode      varchar(200),
+	ipaddress       varchar(50),
+	city            varchar(100),
+	country         varchar(100)
 );
 
 CREATE TABLE prod_tests (
@@ -60,7 +67,9 @@ CREATE TABLE prod_tests (
 	userid          int,
 	duration        int,
 	final_payout    int,
-	total_payout    int
+	total_payout    int,
+	start           timestamp        default NOW(),
+	ending          timestamp
 );
 
 CREATE TABLE dev_tests (
@@ -68,7 +77,9 @@ CREATE TABLE dev_tests (
 	userid          int,
 	duration        int,
 	final_payout    int,
-	total_payout    int
+	total_payout    int,
+	start           timestamp        default NOW(),
+	ending          timestamp   
 );
 
 CREATE TABLE prod_rounds (
@@ -78,7 +89,8 @@ CREATE TABLE prod_rounds (
 	payout          int,
 	selection       int,
 	polygons        varchar(50),
-	prob            int
+	prob            int,
+	mudding         int
 );
 
 CREATE TABLE dev_rounds (
@@ -88,6 +100,7 @@ CREATE TABLE dev_rounds (
 	payout          int,
 	selection       int,
 	polygons        varchar(50),
-	prob            int
+	prob            int,
+	mudding         int
 );
 

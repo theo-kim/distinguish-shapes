@@ -9,6 +9,7 @@ router.get('/', (req, res, next) => {
 	}
 	else {
 		settingsM().then(function(settings) {
+			console.log(req.cookies.probs)
 			if (parseInt(req.cookies.round) > settings.rounds) { 
 				res.redirect('/end');
 			}
