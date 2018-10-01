@@ -1,100 +1,144 @@
-var curr = 1;
-function d() { download(csv, "hello.csv", "text/csv"); }
-function nextRoundA() {
-	++curr;
-	if (curr > 10) curr = 10;
-	$('#round1').text("ROUND " + curr);
-	$('.inputs > tbody > tr').show();	
-	$('.inputs > tbody > tr').not('.round'+curr).hide();
-}
-function prevRoundA() {
-	--curr;
-	if (curr < 1) curr = 1;
-	$('#round1').text("ROUND " + curr);
-	$('.inputs > tbody > tr').show();
-	$('.inputs > tbody > tr').not('.round'+curr).hide();
-}
-function nextRound() {
-	++curr;
-	if (curr > 10) curr = 10;
-	$('#round').text("ROUND " + curr);
-	$('.pushes > tbody > tr').show();	
-	$('.pushes > tbody > tr').not('.round'+curr).hide();
-}
-function prevRound() {
-	--curr;
-	if (curr < 1) curr = 1;
-	$('#round').text("ROUND " + curr);
-	$('.pushes > tbody > tr').show();
-	$('.pushes > tbody > tr').not('.round'+curr).hide();
-}
-function saveValues() {
-	var data = {};
-	$('.inputs > tbody > tr > td > input').each(function(index) {
-		if ($(this).val()) {
-			var round = $(this).parent().parent().attr('class').replace("round", "");
-			var name = $(this).attr("data-name");//parent().parent().find(":first-child").text();
-			var val = $(this).val();
-			if (!data[round - 1]) data[round - 1] = {};
-			data[round - 1][name] = val;
+var action_saved = true;
+
+function saveSettings() {
+	var settingsInputs = document.querySelectorAll(".setting-input");
+	var data = {}
+	var flag = false;
+	for (var i = 0; i < settingsInputs.length; ++i) {
+		if (!settingsInputs[i].className.includes("array"))
+			data[settingsInputs[i].getAttribute("data-key")] = settingsInputs[i].value
+		else if (!data[settingsInputs[i].getAttribute("data-key")])
+			data[settingsInputs[i].getAttribute("data-key")] = [(settingsInputs[i].checked == false) ? 0 : 1]
+		else 
+			data[settingsInputs[i].getAttribute("data-key")].push((settingsInputs[i].checked == false) ? 0 : 1)  
+	}
+
+	var cells = document.querySelectorAll(".weight-cell");
+	var actions = ["", "", ""];
+	var maxPayout = 0;
+	for (var i = 0; i < cells.length; ++i) {
+		if (!(cells[i].value || cells[i].innerHTML)) {
+			alert("You are missing some action weights");
+			flag = true;
+			break;
 		}
-	});
-	$.post('/api/admin/values', { data: JSON.stringify(data) }, function(response) {
-		if (response === 'success')	alert('Saved it!');
-		else alert('Something went wrong...');
-	});
-}
-function savePercentages() {
-	var data = {};
-	$('.pushes > tbody > tr > td > input').each(function(index) {
-		if ($(this).val()) {
-			var round = $(this).parent().parent().attr('class').replace("round", "");
-			var name = $(this).parent().parent().find(":first-child").attr('class');
-			var val = parseInt($(this).val());
-			if (!data[round]) data[round] = {};
-			data[round][name] = val;
+		actions[i % 3] += (cells[i].value || cells[i].innerHTML);
+		if (parseInt(cells[i].value || cells[i].innerHTML) > maxPayout)
+			maxPayout = cells[i].value || cells[i].innerHTML;
+	}
+
+	var pCells = document.querySelectorAll(".prob-cell");
+	var pnCells = document.querySelectorAll(".prob-n-cell");
+	var prob = [];
+	var totalProb = 0;
+	var totalProbN = 0;
+	for (var i = 0; i < pCells.length; ++i) {
+		if (!(pCells[i].value || pCells[i].innerHTML) || !(pnCells[i].value || pnCells[i].innerHTML)) {
+			alert("You are missing some probabilities, check the table!");
+			flag = true;
+			break;
 		}
-	});
-	$.each(data, function(index, val) {
-		var max = 0;
-		$.each(data[index], function(i, v) {
-			if (max < parseInt(data[index][i])) {
-				max = parseInt(data[index][i]);
-			}
-		})
-		data[index]['sort-max'] = max;
-	});
-	$.post('/api/admin/percentages', { data: JSON.stringify(data) }, function(response) {				
-		if (response === 'success')	alert('Saved it!');
-		else alert('Something went wrong...');
-	});
-}
-function saveQuestions() {
-	var data = {};
-	$('.questioninput').each(function (index) {
-		if ($(this).val()) {
-			data[index] = $(this).val();
-		}
-	});
-	$.post('/api/admin/questions', data, function() {
-		alert('Saved!');
-	});
-}
-function bonus(amount, id, ass) {
-	amount = Math.round(amount) / 100; 
-	var c = confirm('CONFIRM Bonus of $' + amount + ' for worker ' + id);
-	if (c) {
-		$.ajax({
-		  type: "POST",
-		  url: '/api/admin/bonus',
-		  data: { worker: id, amount: amount, ass: ass},
-		  success: function(data) {
-		  		if (data == 'success') alert('Bonused');
-		  		else alert('User was already bonused');
-			},
-		  error: function() {
-				alert('User was already bonused');
-			}
+		prob.push({
+			prob: pCells[i].value,
+			n: pnCells[i].value
 		});
+		
+		totalProbN += parseInt(pnCells[i].value)
+		totalProb += parseInt(pnCells[i].value) * parseInt(pCells[i].value)
+	}
+
+	if (totalProb != 100) {
+		alert("Your probabilities don't add up to a 100%!");
+		flag = true;
+	}
+
+	if (totalProbN != data.rounds) {
+		alert("You haven't assigned a probability to each round!");
+		flag = true;
+	}
+
+	console.log(JSON.stringify(prob));
+	
+	data["probabilities"] = JSON.stringify(prob)
+	data["action_weights"] = actions.join(":")
+	data["max_payout"] = maxPayout
+	data["polygons"] = data["polygons"].join("")
+	data["true_polygons"] = data["true_polygons"].join("")
+
+	if (data["n"] != (data["polygons"].split("1").length - 1) || data["m"] != (data["true_polygons"].split("1").length - 1)) {
+		alert("Your 'n' value must be the same as the number of selected polygons and your 'm' number must be the same as the number of selected true_polygons.")
+		flag = true;
+	}
+
+	if (parseInt(data["max_delta"]) <= parseInt(data["mid_delta"])) {
+		flag = true;
+		alert("max_delta MUST be greater than mid_delta")
+	}
+
+	if (parseInt(data["mud_delta"]) > (1/parseInt(data.m)) * ((parseInt(data['total_n']) / parseInt(data.n)) * (parseInt(data.n) - 
+		parseInt(data.m)) - data["max_delta"] - data["mid_delta"])) {
+		flag = true;
+		alert("Illegal mud_delta value")
+	}
+
+	if (!flag) {
+		console.log(data)
+		$.post('/api/admin', data, () => location.reload());
 	}
 }
+
+function editActions(event) {
+	action_saved = false;
+	var cells = document.querySelectorAll(".weight-cell");
+	for (var i = 0; i < cells.length; ++i) {
+		var e = cells[i];
+		var d = document.createElement('input');
+		d.value = e.innerHTML;
+		d.type = "text";
+		d.style.width = "30px"
+		d.className = "weight-cell"
+
+		e.parentNode.replaceChild(d, e);
+	}
+}
+
+function editProbs(event) {
+	action_saved = false;
+	var cells = document.querySelectorAll(".prob-cell");
+	var cellsN = document.querySelectorAll(".prob-n-cell");
+	for (var i = 0; i < cells.length; ++i) {
+		var e = cells[i];
+		var d = document.createElement('input');
+		d.value = e.innerHTML;
+		d.type = "text";
+		d.style.width = "30px"
+		d.className = "prob-cell"
+
+		e.parentNode.replaceChild(d, e);
+	}
+	for (var i = 0; i < cellsN.length; ++i) {
+		var e = cellsN[i];
+		var d = document.createElement('input');
+		d.value = e.innerHTML;
+		d.type = "text";
+		d.style.width = "30px"
+		d.className = "prob-n-cell"
+
+		e.parentNode.replaceChild(d, e);
+	}
+}
+
+function newProbs() {
+	var t = document.querySelector(".prob-table");
+	var r = document.createElement("tr");
+	r.innerHTML = "<td style='text-align:right;'><input type='text' style='max-width:30px'> %</td><td style='text-align:center;'><input type='text' style='max-width:30px'></td>";
+
+	t.appendChild(r);
+}
+
+document.getElementById("next").addEventListener("click", saveSettings);
+document.getElementById("editAct").addEventListener("click", editActions);
+document.getElementById("editProb").addEventListener("click", newProbs);
+
+editActions();
+editProbs();

@@ -4,9 +4,95 @@ var iplocation = require('iplocation')
 var db = require('../../db.js');
 // var adminAPI = require('./admin.js');
 
-var userTable = (process.env.DEBUG) ? 'prod_participants' : 'prod_participants';
-var testTable = (process.env.DEBUG) ? 'prod_tests' : 'prod_tests';
-var roundTable = (process.env.DEBUG) ? 'prod_rounds' : 'prod_rounds';
+var userTable = (process.env.DEBUG) ? 'dev_participants' : 'prod_participants';
+var testTable = (process.env.DEBUG) ? 'dev_tests' : 'prod_tests';
+var roundTable = (process.env.DEBUG) ? 'dev_rounds' : 'prod_rounds';
+var adminTable = (process.env.DEBUG) ? 'dev_admin' : 'prod_admin';
+var probTable = (process.env.DEBUG) ? 'dev_prob' : 'prod_prob';
+
+router.post("/admin", (req, res, next) => {
+	var data = {
+		"total_n": req.body["total_n"],
+		n: req.body.n,
+		polygons: req.body.polygons,
+		m: req.body.m,
+		"true_polygons": req.body["true_polygons"],
+		"max_delta": req.body["max_delta"],
+		"mid_delta": req.body["mid_delta"],
+		"mud_delta": req.body["mud_delta"],
+		"action_weights": req.body["action_weights"],
+		rounds: req.body.rounds,
+		"max_payout": req.body["max_payout"]
+	}
+
+	var p = JSON.parse(req.body.probabilities);
+
+	db(adminTable).insert(data).returning('id').then((id) => {
+		db.select("*").from(probTable).orderBy('prob', 'desc').then((rows) => {
+			var newProbs = [];
+			var deleteProbs = [];
+			var oldProbs = [];
+			var updateProbs = [];
+			var queries = [];
+			for (var i = 0; i < rows.length; ++i) {
+				oldProbs.push(rows[i].prob);
+			}
+			for (var i = 0; i < p.length; ++i) {
+				updateProbs.push(parseInt(p[i].prob));
+			}
+			console.log(updateProbs);
+			console.log(rows);
+			for (var i = 0; i < rows.length; ++i) {
+				if (updateProbs.indexOf(parseInt(rows[i].prob)) == -1) {
+					deleteProbs.push(rows[i].prob)
+				}
+			}
+			for (var i = 0; i < p.length; ++i) {
+				if (oldProbs.indexOf(parseInt(p[i].prob)) == -1) {
+					newProbs.push(p[i])
+				}
+			}
+			if (newProbs.length > 0)
+				db(probTable).insert(newProbs).then(() => {
+					if (deleteProbs.length > 0) {
+						queries = []
+						for (var i = 0; i < deleteProbs.length; ++i) {
+							queries.push(db(probTable).delete().where("prob", parseInt(deleteProbs[i])));
+						}
+						return Promise.all(queries);
+					}
+					else {
+						return Promise.resolve();
+					}
+				}).then(() => { 
+					queries = []
+					for (var i = 0; i < p.length; ++i) {
+						queries.push(db(probTable).update(p[i]).where("prob", parseInt(p[i].prob)));
+					}
+					return Promise.all(queries);
+				}).then(() => { res.send("success"); });
+			else if (deleteProbs.length > 0) {
+				queries = []
+				for (var i = 0; i < deleteProbs.length; ++i) {
+					queries.push(db(probTable).delete().where("prob", parseInt(deleteProbs[i])));
+				}
+				Promise.all(queries).then(() => { 
+					queries = []
+					for (var i = 0; i < p.length; ++i) {
+						queries.push(db(probTable).update(p[i]).where("prob", parseInt(p[i].prob)));
+					}
+					return Promise.all(queries);
+				}).then(() => { res.send("success"); });
+			}
+			else {
+				for (var i = 0; i < p.length; ++i) {
+					queries.push(db(probTable).update(p[i]).where("prob", parseInt(p[i].prob)));
+				}
+				Promise.all(queries).then(() => { res.send("success"); });
+			}
+		})
+	})
+});
 
 router.post("/participant", (req, res, next) => {
 	var data = {

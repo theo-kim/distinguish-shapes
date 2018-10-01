@@ -19,7 +19,7 @@ function countDown (time, interval) {
 			setTimeout(reset, interval)
 		}
 		else 
-			continueBtn.innerHTML = "Continue"
+			continueBtn.innerHTML = "Continue";
 	}
 	reset();
 }

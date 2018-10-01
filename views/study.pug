@@ -34,7 +34,7 @@ block content
 					selection: e.target.dIndex,
 					payout: payouts[e.target.dIndex][maxShape],
 					polygons: JSON.stringify(polygon_numbers),
-					prob: #{prob} 
+					prob: #{prob}, 
 				}
 				$.post('/api/round', data, advance);
 			}, false);

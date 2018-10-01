@@ -1,5 +1,59 @@
 extends layout
 
+include includes/test.pug
+
 block content
-	h2 Current Settings:
-		
+	div(style="padding:100px;overflow:hidden")
+		h2 Current Settings:
+		button#next(style="float:none;margin-top:10px;margin-bottom:10px;") Save Your New Settings
+		table#table
+			thead
+				th Setting
+				th Current Value
+				th New Value
+			each setting, key in settings
+				- if (key == "polygons")
+					- var p_array = settings["shapes"]
+					tr
+						td=key
+						td=settings["shapes"]
+						td 
+							- for (var i = 0; i < setting.length; ++i)
+								input(class="setting-input shapes array", id=(setting.length - i) + "-check" type="checkbox", checked=((setting[i]=="1") ? true : false), data-key=key)
+								label(for=(setting.length - i) + "-check") &nbsp;&nbsp;#{(setting.length - i)}-sided shape
+								br
+				- else if (key == "true_polygons")
+					- var p_array = settings["true_shapes"]
+					tr
+						td=key
+						td=settings["true_shapes"]
+						td 
+							- for (var i = 0; i < setting.length; ++i)
+								input(class="setting-input true-shapes array", id=(setting.length - i) + "-check" type="checkbox", checked=((setting[i]=="1") ? true : false), data-key=key)
+								label(for=(setting.length - i) + "-check") &nbsp;&nbsp;#{(setting.length - i)}-sided shape
+								br
+				- else if (key == "action_weights")
+					- var w_array = setting.split(':');
+					td=key
+					td
+						+table(settings, 0.9)
+					td 
+							button#editAct Clear Action Weights
+							br
+							br
+							p(style="width: 250px;white-space:normal;") If you want to add a shape (row) to the table, add a shape above, save the settings and then add the new action weights.
+				- else if (key == "probabilities")
+					td=key
+					td
+						+probabilities(setting)
+					td 
+							button#editProb Add New Probability
+				- else if (key == "shapes" || key == "true_shapes")
+					-console.log('hello');
+				- else
+					tr
+						td=key
+						td=setting
+						td 
+							input(class="setting-input", type="text", value=setting, placeholder=key, data-key=key)
+	script(src="/javascripts/admin.js")

@@ -4,12 +4,13 @@ mixin probabilities(p)
 	div(style="display:flex; flex-direction: column; justify-content:center; align-items:center; margin: 20px 0")
 		table#table
 			thead
-				td(style="text-align:right") Probability of being<br>selected for final payment
-				td Number of rounds
-			each prob, i in p
-				tr 
-					td(style="text-align:right")=prob.prob + " %"
-					td(style="text-align:center")=prob.n
+				th(style="text-align:right; background:#888; font-weight:normal;") Probability of being<br>selected for final payment
+				td(style="background:#888") Number of rounds
+			tbody.prob-table
+				each prob, i in p
+					tr 
+						td(style="text-align:right") <span class='prob-cell'>#{prob.prob}</span> %
+						td(style="text-align:center") <span class='prob-n-cell'>#{prob.n}</span>
 
 mixin table(settings, scale)
 	- scale = scale || 1.0
@@ -27,9 +28,9 @@ mixin table(settings, scale)
 				each shape, i in settings.true_shapes
 					tr
 						td=shape+"-sided"
-						td(style="text-align:center;")="$" + weights[0][i]
-						td(style="text-align:center;")="$" + weights[1][i]
-						td(style="text-align:center;")="$" + weights[2][i]
+						td(style="text-align:center;") $<span class="weight-cell">#{weights[0][i]}</span>
+						td(style="text-align:center;") $<span class="weight-cell">#{weights[1][i]}</span>
+						td(style="text-align:center;") $<span class="weight-cell">#{weights[2][i]}</span>
 
 mixin board(settings, prob)
 	+table(settings, 0.8)
@@ -95,6 +96,7 @@ mixin board(settings, prob)
 	script.
 		var polygon_numbers = !{polygon_n_str}
 		var shape_names = !{true_shapes_str}
+		var mudding = !{settings["mud_delta"]}
 		var nums = '!{settings["action_weights"]}'
 		
 	//- script(src="/javascripts/test.js")
