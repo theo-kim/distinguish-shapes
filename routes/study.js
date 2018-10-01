@@ -27,7 +27,7 @@ router.get('/', (req, res, next) => {
 
 				do {
 					prob = Math.floor(Math.random() * probs.length)
-				} while (settings.probabilities[probs[prob]] == 0)
+				} while (choices[probs[prob]] <= 0)
 				res.cookie('probs', JSON.stringify(choices));
 				res.render('study', {
 					settings: settings,
