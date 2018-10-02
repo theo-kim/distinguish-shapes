@@ -1,12 +1,13 @@
 var express = require('express');
 var router = express.Router();
-var welcometext = require('../data/welcometext.json');
+var welcome = require('../data/welcometext.json');
 var db = require('../db.js');
 var settingsM = require('../settings.js');
 
 
 //
 router.get('/', (req, res, next) => {
+	let welcometext = Object.assign({}, welcome);
 	settingsM().then((settings) => {
 		for (i in welcometext)
 			for (j in settings)

@@ -46,6 +46,7 @@ function maxInString(str) {
 
 module.exports = function() {
 	return new Promise((resolve, reject) => {
+		console.log("run")
 		db.select("*").from(adminTable).orderBy('id', 'desc').first()
 		.then((settings) => {
 			db.select("*").from(probTable).orderBy('prob', 'desc').then((prob) => {
