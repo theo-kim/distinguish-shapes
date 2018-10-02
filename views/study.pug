@@ -8,6 +8,8 @@ block content
 		+board(settings, prob)
 				
 	script.
+		var block = false;
+
 		function advance() {
 			var curr = parseInt($.cookie("round"));
 			var sprob = JSON.parse($.cookie("probs"));
@@ -37,7 +39,10 @@ block content
 					prob: #{prob},
 					mudding: mudding 
 				}
-				$.post('/api/round', data, advance);
+				if (!block) {
+					block = true;
+					$.post('/api/round', data, advance);
+				}
 			}, false);
 			actions[i].dIndex = i;
 		}
