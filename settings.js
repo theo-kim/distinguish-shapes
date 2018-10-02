@@ -1,7 +1,7 @@
 var db = require('./db.js');
 
-var adminTable = (process.env.DEBUG) ? 'dev_admin' : 'prod_admin';
-var probTable = (process.env.DEBUG) ? 'dev_prob' : 'prod_prob';
+var adminTable = (process.env.DEBUG) ? 'prod_admin' : 'prod_admin';
+var probTable = (process.env.DEBUG) ? 'prod_prob' : 'prod_prob';
 
 var numRef = 	["zero", "one", "two", "three", "four", "five", "six", "seven", 
 				"eight", "nine", "ten", "eleven", "twelve", "thirteen"];
@@ -49,6 +49,8 @@ module.exports = function() {
 		db.select("*").from(adminTable).orderBy('id', 'desc').first()
 		.then((settings) => {
 			db.select("*").from(probTable).orderBy('prob', 'desc').then((prob) => {
+				console.log(adminTable)
+				console.log(settings)
 				settings["n-m"] = settings.n - settings.m;
 				settings["polygons_text"] = translatePolyString(settings.polygons);
 				settings["true_polygons_text"] = translatePolyString(settings["true_polygons"]);
