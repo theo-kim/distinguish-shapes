@@ -13,8 +13,8 @@ function guid() {
 
 }
 
-var testTable = (process.env.DEBUG) ? 'prod_tests' : 'prod_tests';
-var userTable = (process.env.DEBUG) ? 'prod_participants' : 'prod_participants';
+var testTable = (process.env.DEBUG) ? 'dev_tests' : 'prod_tests';
+var userTable = (process.env.DEBUG) ? 'dev_participants' : 'prod_participants';
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
@@ -23,15 +23,16 @@ router.get('/', (req, res, next) => {
 		var totalreturn = req.cookies.payout;
 		db.select(['id', 'surveycode']).from(userTable).where('id', req.cookies['user_id']).first()
 			.then((result) => {
-				db.select('final_payout').from(testTable).where('id', req.cookies['test_id']).first()
+				db.select('final_payout', 'selected_round').from(testTable).where('id', req.cookies['test_id']).first()
 				.then((t) => {
+					console.log(result)
 					if (!result.surveycode) {
 						db(userTable).update({'surveycode': usercode, }).where('id', result.id)
 							.then((r) => {
-								res.render('result', {code: usercode, total: t["final_payout"]});	
+								res.render('result', {code: usercode, total: t["final_payout"], round: t['selected_round']});	
 							})
 					}
-					else res.render('result', {code: result.surveycode, total: t["final_payout"]});
+					else res.render('result', {code: result.surveycode, total: t["final_payout"], round: t['selected_round']});
 				})
 			});
 	}
