@@ -12,9 +12,9 @@ block content
 				div(id="hidden-" + index, style="display:none; margin-bottom: 50px;")
 					p= line
 					div(style="text-align:center;")
-						each type in settings.shapes 
+						each type in settings.shapes
 							+shape(type)
-			- else if (index == 2) 
+			- else if (index == 2)
 				div(id="hidden-" + index, style="display:none")
 					p= line
 					div(style="text-align:center; padding:30px; border: 1px solid #000; margin-bottom: 50px")
@@ -22,7 +22,7 @@ block content
 							- if (i > 0 && i % 8 == 0)
 								br
 							+shape(settings.shapes[Math.floor(Math.random() * settings.n)])
-			- else if (index == 5)
+			- else if (index == 4)
 				div(id="hidden-" + index, style="display:none; margin-bottom: 50px")
 					p!= line
 					br
@@ -39,7 +39,7 @@ block content
 				div(id="hidden-" + index, style="display:none;margin-bottom: 50px")
 					p!= line
 					include includes/clock.pug
-			- else 
+			- else
 				div(id="hidden-" + index, style="display:none;margin-bottom: 50px")!= line
 
 		button#continue Continue
