@@ -1,7 +1,7 @@
 var db = require('./db.js');
 
-var adminTable = (process.env.DEBUG) ? 'prod_admin' : 'prod_admin';
-var probTable = (process.env.DEBUG) ? 'prod_prob' : 'prod_prob';
+var adminTable = (process.env.DEBUG) ? 'dev_admin' : 'prod_admin';
+var probTable = (process.env.DEBUG) ? 'dev_prob' : 'prod_prob';
 
 var numRef = 	["zero", "one", "two", "three", "four", "five", "six", "seven", 
 				"eight", "nine", "ten", "eleven", "twelve", "thirteen"];
