@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var iplocation = require('iplocation')
 var db = require('../../db.js');
-// var adminAPI = require('./admin.js');
+var settingsM = require('../../settings.js');
 
 var userTable = (process.env.DEBUG) ? 'dev_participants' : 'prod_participants';
 var testTable = (process.env.DEBUG) ? 'dev_tests' : 'prod_tests';
@@ -149,27 +149,36 @@ router.post("/end", (req, res, next) => {
 	var roll = req.body.roll;
 	console.log(roll)
 
-	db.select("*").from(roundTable).where("testid", parseInt(req.cookies["test_id"])).then((rounds) => {
-		var intervals = [];
-		var counter = 0;
-		for (var i = 0; i < rounds.length; ++i) {
-			intervals.push({
-				start: counter,
-				end: counter + rounds[i].prob,
-				payout: rounds[i].payout
-			})
-			counter += rounds[i].prob
-		}
-		var duration = (new Date()).getTime()- Date.parse(req.cookies["start_test"]);
-		var ending = (new Date());
-		for (var i = 0; i < intervals.length; ++i) {
-			if (roll > intervals[i].start && roll <= intervals[i].end) {
-				db(testTable).update({ "final_payout": intervals[i].payout, "duration": duration, ending: ending }).where("id", parseInt(req.cookies["test_id"])).then(() => {
-					res.send("success");
-				});
+	settingsM().then((settings) => {
+		db.select("*").from(roundTable)
+			.where("testid", parseInt(req.cookies["test_id"]))
+			.orderBy("id", "asc")
+			.then((rounds) => {
+			var intervals = [];
+			var counter = 0;
+
+			for (var i = 0; i < rounds.length; ++i) {
+				intervals.push({
+					start: counter,
+					end: counter + rounds[i].prob,
+					payout: rounds[i].payout
+				})
+				counter += rounds[i].prob
 			}
-		}
-		// res.send("success");
+
+			console.log("Total Correct: ", totalCorrect)
+
+			var duration = (new Date()).getTime()- Date.parse(req.cookies["start_test"]);
+			var ending = (new Date());
+			for (var i = 0; i < intervals.length; ++i) {
+				if (roll > intervals[i].start && roll <= intervals[i].end) {
+					db(testTable).update({ "selected_round": (i + 1), "final_payout": intervals[i].payout, "duration": duration, ending: ending }).where("id", parseInt(req.cookies["test_id"])).then(() => {
+						res.send("success");
+					});
+				}
+			}
+			// res.send("success");
+		});
 	});
 });
 

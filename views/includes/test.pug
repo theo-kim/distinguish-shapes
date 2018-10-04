@@ -51,7 +51,7 @@ mixin board(settings, prob)
 		-
 			var m_start = settings.shapes.indexOf(settings["true_shapes"][0]);
 			var m_end = m_start + settings.m;
-			var d_mud = Math.floor(Math.random() * (settings["mud_delta"] - (-1 * settings["mud_delta"])) + (-1 * settings["mud_delta"]));
+			var d_mud = Math.floor(Math.random() * ((settings["mud_delta"] + 1) - (-1 * settings["mud_delta"])) + (-1 * settings["mud_delta"]));
 			var initial_quantity = Math.round(settings.total_n / settings.n)
 			var polygon_n = new Array(settings.n).fill(0);
 			for (var i = m_start; i < m_end; ++i) {
@@ -98,6 +98,7 @@ mixin board(settings, prob)
 		var shape_names = !{true_shapes_str}
 		var mudding = !{d_mud}
 		var nums = '!{settings["action_weights"]}'
+		console.log(mudding)
 		
 	//- script(src="/javascripts/test.js")
 	//- script.

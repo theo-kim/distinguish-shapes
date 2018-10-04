@@ -15,6 +15,7 @@
     "csv-parse": "^2.0.0",
     "debug": "~2.6.9",
     "express": "~4.15.5",
+    "express-minify": "^1.0.0",
     "iplocation": "^5.0.0",
     "json2csv": "^3.11.5",
     "knex": "^0.14.2",
@@ -25,6 +26,7 @@
     "pg": "^6.1.0",
     "pug": "2.0.0-beta11",
     "serve-favicon": "~2.4.5",
+    "uglify-js": "^3.4.9",
     "underscore": "^1.8.3",
     "xml-parse": "^0.3.1"
   },

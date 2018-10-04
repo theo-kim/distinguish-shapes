@@ -79,7 +79,8 @@ CREATE TABLE dev_tests (
 	final_payout    int,
 	total_payout    int,
 	start           timestamp        default NOW(),
-	ending          timestamp   
+	ending          timestamp,
+	selected_round  int   
 );
 
 CREATE TABLE prod_rounds (
@@ -90,7 +91,8 @@ CREATE TABLE prod_rounds (
 	selection       int,
 	polygons        varchar(50),
 	prob            int,
-	mudding         int
+	mudding         int,
+	selected_round  int
 );
 
 CREATE TABLE dev_rounds (

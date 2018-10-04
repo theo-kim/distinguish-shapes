@@ -33,6 +33,7 @@ function shapes(input) {
 }
 
 function maxInString(str) {
+	console.log(str.length)
 	max = 0
 	maxIndex = 0
 	for (var i = 0; i < str.length; ++i)
@@ -40,13 +41,12 @@ function maxInString(str) {
 			max = parseInt(str[i])
 			maxIndex = i
 		}
-	return [max, i]
+	return [max, maxIndex]
 }
 
 
 module.exports = function() {
 	return new Promise((resolve, reject) => {
-		console.log("run")
 		db.select("*").from(adminTable).orderBy('id', 'desc').first()
 		.then((settings) => {
 			db.select("*").from(probTable).orderBy('prob', 'desc').then((prob) => {
@@ -58,6 +58,10 @@ module.exports = function() {
 				settings["shapes"] = shapes(settings.polygons);
 				settings["true_shapes"] = shapes(settings["true_polygons"]);
 				settings.probabilities = prob;
+				settings.correct = [null, null, null]
+				settings.correct[0] = maxInString(settings["action_weights"].split(":")[0])[1];
+				settings.correct[1] = maxInString(settings["action_weights"].split(":")[1])[1];
+				settings.correct[2] = maxInString(settings["action_weights"].split(":")[2])[1];
 
 				resolve(settings);
 			});
