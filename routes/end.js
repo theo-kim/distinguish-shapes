@@ -26,7 +26,7 @@ router.get('/', (req, res, next) => {
 
 			console.log("Total Correct: ", totalCorrect)
 
-			if (totalCorrect <= requiredCorrect) {
+			if (totalCorrect < requiredCorrect) {
 				var duration = (new Date()).getTime()- Date.parse(req.cookies["start_test"]);
 				var ending = (new Date());
 				db(testTable).update({ "selected_round": -1, "final_payout": 0, "duration": duration, ending: ending })
