@@ -3,11 +3,11 @@ extends layout.pug
 block content
 	div#welcome
 		h1 Thank you for participating in this study!
-		h3 Your bonus: 
+		h3 Your bonus:
 			span(style="color:#888;font-weight:bold;")="$" + (total + 0.05)
 		- if (round >= 0)
 			h4 This was chosen using round #{round}
 		- else
-			h4 You did not qualify for the bonus as you incorrectly chose the most common shape in less than 10 / 20 rounds.
-		h3 Survey code: 
+			h4 You did not qualify for the bonus as you chose the best action in less than 13 / 30 rounds.
+		h3 Survey code:
 			span(style="color:#888;font-weight:bold;")=code
