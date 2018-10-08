@@ -158,12 +158,14 @@ router.post("/end", (req, res, next) => {
 			var counter = 0;
 
 			for (var i = 0; i < rounds.length; ++i) {
-				intervals.push({
-					start: counter,
-					end: counter + rounds[i].prob,
-					payout: rounds[i].payout
-				})
-				counter += rounds[i].prob
+				if (rounds[i].prob) {
+					intervals.push({
+						start: counter,
+						end: counter + rounds[i].prob,
+						payout: rounds[i].payout
+					})
+					counter += rounds[i].prob
+				}
 			}
 
 			var duration = (new Date()).getTime()- Date.parse(req.cookies["start_test"]);

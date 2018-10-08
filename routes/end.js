@@ -11,7 +11,7 @@ router.get('/', (req, res, next) => {
 	settingsM().then((settings) => {
 		db.select("*").from(roundTable).where("testid", parseInt(req.cookies["test_id"])).then((rounds) => {
 			// THIS IS WHERE TO FIX THRESHOLD VALUE!!!
-			var requiredCorrect = 1;
+			var requiredCorrect = 13;
 			// ///////////////////////////////////////
 			var totalCorrect = 0;
 
@@ -24,7 +24,7 @@ router.get('/', (req, res, next) => {
 					polygons.indexOf(Math.max(...polygons)));
 			}
 
-			console.log("Total Correct: ", totalCorrect)
+			console.log("Total Correct: ", totalCorrect);
 
 			if (totalCorrect < requiredCorrect) {
 				var duration = (new Date()).getTime()- Date.parse(req.cookies["start_test"]);
