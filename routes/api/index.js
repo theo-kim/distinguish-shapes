@@ -147,7 +147,7 @@ router.post("/round", (req, res, next) => {
 
 router.post("/end", (req, res, next) => {
 	var roll = req.body.roll;
-	console.log(roll)
+	console.log("roll", roll)
 
 	settingsM().then((settings) => {
 		db.select("*").from(roundTable)
@@ -165,8 +165,6 @@ router.post("/end", (req, res, next) => {
 				})
 				counter += rounds[i].prob
 			}
-
-			console.log("Total Correct: ", totalCorrect)
 
 			var duration = (new Date()).getTime()- Date.parse(req.cookies["start_test"]);
 			var ending = (new Date());

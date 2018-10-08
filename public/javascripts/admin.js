@@ -33,22 +33,23 @@ function saveSettings() {
 	var totalProb = 0;
 	var totalProbN = 0;
 	for (var i = 0; i < pCells.length; ++i) {
-		if (!(pCells[i].value || pCells[i].innerHTML) || !(pnCells[i].value || pnCells[i].innerHTML)) {
+		if ((pCells[i].value || pCells[i].innerHTML) && !(pnCells[i].value || pnCells[i].innerHTML)) {
 			alert("You are missing some probabilities, check the table!");
 			flag = true;
 			break;
 		}
-		prob.push({
-			prob: pCells[i].value,
-			n: pnCells[i].value
-		});
-		
-		totalProbN += parseInt(pnCells[i].value)
-		totalProb += parseInt(pnCells[i].value) * parseInt(pCells[i].value)
+		else if ((pCells[i].value || pCells[i].innerHTML)) {
+			prob.push({
+				prob: pCells[i].value,
+				n: pnCells[i].value
+			});
+			totalProbN += parseInt(pnCells[i].value)
+			totalProb += parseInt(pnCells[i].value) * parseInt(pCells[i].value)
+		}
 	}
 
 	if (totalProb != 100) {
-		alert("Your probabilities don't add up to a 100%!");
+		alert("Your probabilities don't add up to a 100%!  They currently add up to: " + totalProb);
 		flag = true;
 	}
 
