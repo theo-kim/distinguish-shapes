@@ -59,8 +59,8 @@ module.exports = function() {
 				settings["true_shapes"] = shapes(settings["true_polygons"]);
 				settings.probabilities = prob;
 				settings.correct = [null, null, null]
-				settings.correct[0] = maxInString(settings["action_weights"].split(":")[0])[1];
-				settings.correct[1] = maxInString(settings["action_weights"].split(":")[1])[1];
+				settings.correct[0] = 0;
+				settings.correct[1] = 1;
 				settings.correct[2] = 2;
 
 				resolve(settings);

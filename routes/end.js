@@ -20,7 +20,11 @@ router.get('/', (req, res, next) => {
 				for (var j = 0; j < polygons.length; ++j) {
 					polygons[j] = parseInt(polygons[j].replace("[", "").replace("]", ""));
 				}
-				totalCorrect += (settings.correct[parseInt(rounds[i].selection)] + 1 ==
+				// remove the 2 dummy polygons
+				polygons.pop()
+				polygons.shift()
+				// check if the user got their selection correct
+				totalCorrect += (settings.correct[parseInt(rounds[i].selection)] ==
 					polygons.indexOf(Math.max(...polygons)));
 			}
 
