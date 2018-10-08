@@ -32,5 +32,4 @@ npm-debug.log
 # Bower components
 bower_components
 
-data/marketdata.json
-data/marketvalues.json
+bonus.js
