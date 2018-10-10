@@ -7,7 +7,7 @@ var settingsM = require('../../settings.js');
 var userTable = (process.env.DEBUG) ? 'dev_participants' : 'prod_participants';
 var testTable = (process.env.DEBUG) ? 'dev_tests' : 'prod_tests';
 var roundTable = (process.env.DEBUG) ? 'dev_rounds' : 'prod_rounds';
-var adminTable = (process.env.DEBUG) ? 'dev_admin' : 'prod_admin';
+var adminTable = (process.env.DEBUG) ? 'prod_admin' : 'prod_admin';
 var probTable = (process.env.DEBUG) ? 'dev_prob' : 'prod_prob';
 
 router.post("/admin", (req, res, next) => {

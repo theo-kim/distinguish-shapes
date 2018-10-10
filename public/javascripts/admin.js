@@ -14,7 +14,7 @@ function saveSettings() {
 	}
 
 	var cells = document.querySelectorAll(".weight-cell");
-	var actions = ["", "", ""];
+	var actions = [[], [], []];
 	var maxPayout = 0;
 	for (var i = 0; i < cells.length; ++i) {
 		if (!(cells[i].value || cells[i].innerHTML)) {
@@ -22,10 +22,13 @@ function saveSettings() {
 			flag = true;
 			break;
 		}
-		actions[i % 3] += (cells[i].value || cells[i].innerHTML);
+		actions[i % 3].push(cells[i].value || cells[i].innerHTML);
 		if (parseInt(cells[i].value || cells[i].innerHTML) > maxPayout)
 			maxPayout = cells[i].value || cells[i].innerHTML;
 	}
+
+	for (var i = 0; i < actions.length; ++i)
+		actions[i] = actions[i].join(',');
 
 	var pCells = document.querySelectorAll(".prob-cell");
 	var pnCells = document.querySelectorAll(".prob-n-cell");
