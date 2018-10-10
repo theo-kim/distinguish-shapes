@@ -63,6 +63,12 @@ module.exports = function() {
 				settings.correct[1] = 1;
 				settings.correct[2] = 2;
 
+				var actions = settings["action_weights"].split(':')
+				for (var i = 0; i < actions.length; ++i) 
+					actions[i] = actions[i].split(',')
+
+				settings["action_weights"] = actions;
+
 				resolve(settings);
 			});
 		});

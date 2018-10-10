@@ -15,7 +15,7 @@ mixin probabilities(p)
 mixin table(settings, scale)
 	- scale = scale || 1.0
 	div(style="display: flex; align-items: center; justify-content: center; flex-direction:row; transform: scale(" + scale + "); margin-bottom: 20px;")
-		- weights = settings["action_weights"].split(":")
+		- weights = settings["action_weights"]
 		span(style="margin-right: 10px") The most common shape.
 		div(style="display: flex; align-items: center; justify-content: center; flex-direction:column")
 			span(style="margin-bottom: 10px") The action you choose.
