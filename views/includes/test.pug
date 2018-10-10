@@ -97,7 +97,7 @@ mixin board(settings, prob)
 		var polygon_numbers = !{polygon_n_str}
 		var shape_names = !{true_shapes_str}
 		var mudding = !{d_mud}
-		var nums = '!{settings["action_weights"]}'
+		var nums = !{JSON.stringify(settings["action_weights"])}
 		console.log(mudding)
 		
 	//- script(src="/javascripts/test.js")
