@@ -3,7 +3,7 @@ var db = require('./db.js');
 var adminTable = (process.env.DEBUG) ? 'dev_admin' : 'prod_admin';
 var probTable = (process.env.DEBUG) ? 'dev_prob' : 'prod_prob';
 
-var numRef = 	["zero", "one", "two", "three", "four", "five", "six", "seven", 
+var numRef = 	["zero", "one", "two", "three", "four", "five", "six", "seven",
 				"eight", "nine", "ten", "eleven", "twelve", "thirteen"];
 
 var shapeRef = ["", "", "", "three", "four", "five", "six", "seven",
@@ -13,7 +13,7 @@ var shapeRef = ["", "", "", "three", "four", "five", "six", "seven",
 function translatePolyString(input) {
 	var output = "", translate = [];
 	for (i = 0; i < input.length; ++i)
-		if (input[i] == "1") 
+		if (input[i] == "1")
 			output += numRef[input.length - i] + '-sided, ';
 
 	translate = output.split(", ")
@@ -26,7 +26,7 @@ function translatePolyString(input) {
 function shapes(input) {
 	var output = [];
 	for (i = 0; i < input.length; ++i)
-		if (input[i] == "1") 
+		if (input[i] == "1")
 			output.push(shapeRef[input.length - i]);
 	output.reverse()
 	return output
@@ -60,11 +60,11 @@ module.exports = function() {
 				settings.probabilities = prob;
 				settings.correct = [null, null, null]
 				settings.correct[0] = 0;
-				settings.correct[1] = 1;
-				settings.correct[2] = 2;
+				settings.correct[1] = 2;
+				settings.correct[2] = 1;
 
 				var actions = settings["action_weights"].split(':')
-				for (var i = 0; i < actions.length; ++i) 
+				for (var i = 0; i < actions.length; ++i)
 					actions[i] = actions[i].split(',')
 
 				settings["action_weights"] = actions;
