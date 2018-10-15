@@ -1,6 +1,5 @@
 CREATE TABLE prod_admin (
 	id              SERIAL,
-	total_n	        int,
 	n               int,
 	polygons        varchar(20),
 	m               int,
@@ -15,7 +14,6 @@ CREATE TABLE prod_admin (
 
 CREATE TABLE dev_admin (
 	id              SERIAL,
-	total_n	        int,
 	n               int,
 	polygons        varchar(20),
 	m               int,
@@ -28,15 +26,15 @@ CREATE TABLE dev_admin (
 	max_payout		numeric(3, 2)
 );
 
-CREATE TABLE prod_prob (
+CREATE TABLE prod_complexity (
 	id              SERIAL,
-	prob.           int,
+	complex         int,
 	n               int
 );
 
-CREATE TABLE dev_prob (
+CREATE TABLE dev_complexity (
 	id              SERIAL,
-	prob            int,
+	complex         int,
 	n               int
 );
 
@@ -69,7 +67,8 @@ CREATE TABLE prod_tests (
 	final_payout    int,
 	total_payout    int,
 	start           timestamp        default NOW(),
-	ending          timestamp
+	ending          timestamp,
+	selected_timer  int
 );
 
 CREATE TABLE dev_tests (
@@ -80,7 +79,8 @@ CREATE TABLE dev_tests (
 	total_payout    int,
 	start           timestamp        default NOW(),
 	ending          timestamp,
-	selected_round  int   
+	selected_round  int,
+	selected_timer  int   
 );
 
 CREATE TABLE prod_rounds (

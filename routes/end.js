@@ -28,8 +28,10 @@ router.get('/', (req, res, next) => {
 					polygons.indexOf(Math.max(...polygons)));
 			}
 
-			console.log("Total Correct: ", totalCorrect);
+			// DEBUG
+			// console.log("Total Correct: ", totalCorrect);
 
+			// record clock time
 			if (totalCorrect < requiredCorrect) {
 				var duration = (new Date()).getTime()- Date.parse(req.cookies["start_test"]);
 				var ending = (new Date());

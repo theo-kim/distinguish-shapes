@@ -27,9 +27,11 @@ router.get('/', (req, res, next) => {
 				var probs = Object.keys(choices);
 								console.log(choices)
 
+				// Change weights
 				do {
 					prob = Math.floor(Math.random() * probs.length)
 				} while (choices[probs[prob]] <= 0)
+
 				res.cookie('probs', JSON.stringify(choices));
 				res.render('study', {
 					settings: settings,
