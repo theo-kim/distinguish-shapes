@@ -31,14 +31,12 @@ CREATE TABLE dev_admin (
 -- store the tables as a whole for later JOIN queries
 CREATE TABLE prod_tables (
 	id              SERIAL              PRIMARY KEY,
-	payout          int,
 	start_round     int,
 	end_round       int
 );
 
 CREATE TABLE dev_tables (
 	id              SERIAL              PRIMARY KEY,
-	payout          int,
 	start_round     int,
 	end_round       int
 );
@@ -129,11 +127,21 @@ CREATE TABLE dev_rounds (
 INSERT INTO prod_admin (n, polygons, m, true_polygons, max_delta, mid_delta, mud_delta, rounds, max_payout)
 VALUES (5, '0011111000', 3, '0001110000', 2, 1, 2, 30, 10.00);
 
-INSERT INTO dev_admin (n, polygons, m, true_polygons, max_delta, mid_delta, mud_delta, action_weights, rounds, max_payout)
+INSERT INTO dev_admin (n, polygons, m, true_polygons, max_delta, mid_delta, mud_delta, rounds, max_payout)
 VALUES (5, '0011111000', 3, '0001110000', 2, 1, 2, 30, 10.00);
 
-INSERT INTO prod_complexity (complex, n)
-VALUES (8, 5), (24, 20), (64, 5);
+-- INSERT STATEMENT for default action tables
+INSERT INTO prod_tables (start_round, end_round)
+VALUES (1, 15), (16, 30);
 
-INSERT INTO dev_complexity (complex, n)
-VALUES (8, 5), (24, 20), (64, 5);
+INSERT INTO dev_tables (start_round, end_round)
+VALUES (1, 15), (16, 30);
+
+-- INSERT STATEMENT for default action table values
+INSERT INTO prod_actions (tableid, payout, action, shape)
+VALUES 	(1, 10, 0, 0), (1, 0, 0, 1), (1, 0, 0, 2), (1, 0, 1, 0), (1, 0, 1, 1), (1, 10, 1, 2), (1, 2, 2, 0), (1, 2, 2, 1), (1, 2, 2, 2),
+		(2, 0, 0, 0), (2, 10, 0, 1), (2, 0, 0, 2), (2, 0, 1, 0), (2, 0, 1, 1), (2, 0, 1, 2), (2, 2, 2, 0), (2, 2, 2, 1), (2, 2, 2, 2);
+
+INSERT INTO dev_actions (tableid, payout, action, shape)
+VALUES (1, 10, 0, 0), (1, 0, 0, 1), (1, 0, 0, 2), (1, 0, 1, 0), (1, 0, 1, 1), (1, 10, 1, 2), (1, 2, 2, 0), (1, 2, 2, 1), (1, 2, 2, 2),
+		(2, 0, 0, 0), (2, 10, 0, 1), (2, 0, 0, 2), (2, 0, 1, 0), (2, 0, 1, 1), (2, 0, 1, 2), (2, 2, 2, 0), (2, 2, 2, 1), (2, 2, 2, 2);
