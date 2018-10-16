@@ -1,1 +1,1 @@
-for /f "delims=" %%i in ('heroku config:get DATABASE_URL -a distinguish-shapes') do set DATABASE_URL=%%i?ssl=true
+for /f "delims=" %%i in ('heroku config:get DATABASE_URL -a distinguish-shapes-3') do set DATABASE_URL=%%i?ssl=true
