@@ -41,10 +41,10 @@ block content
 							br
 							br
 							p(style="width: 250px;white-space:normal;") If you want to add a shape (row) to the table, add a shape above, save the settings and then add the new action weights.
-				- else if (key == "probabilities")
+				- else if (key == "complexity")
 					td=key
 					td
-						+probabilities(setting)
+						+complexities(setting)
 					td 
 							button#editProb Add New Probability
 				- else if (key == "shapes" || key == "true_shapes")

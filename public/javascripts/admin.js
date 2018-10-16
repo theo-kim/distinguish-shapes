@@ -37,33 +37,28 @@ function saveSettings() {
 	var totalProbN = 0;
 	for (var i = 0; i < pCells.length; ++i) {
 		if ((pCells[i].value || pCells[i].innerHTML) && !(pnCells[i].value || pnCells[i].innerHTML)) {
-			alert("You are missing some probabilities, check the table!");
+			alert("You are missing some complexities, check the table!");
 			flag = true;
 			break;
 		}
 		else if ((pCells[i].value || pCells[i].innerHTML)) {
 			prob.push({
-				prob: pCells[i].value,
+				complex: pCells[i].value,
 				n: pnCells[i].value
 			});
+			if (parseInt(pCells[i].value) % 8 != 0)
+				alert("Your complexities must be divisible by 8")
 			totalProbN += parseInt(pnCells[i].value)
 			totalProb += parseInt(pnCells[i].value) * parseInt(pCells[i].value)
 		}
 	}
 
-	if (totalProb != 100) {
-		alert("Your probabilities don't add up to a 100%!  They currently add up to: " + totalProb);
-		flag = true;
-	}
-
 	if (totalProbN != data.rounds) {
-		alert("You haven't assigned a probability to each round!");
+		alert("You haven't assigned a complexity to each round!");
 		flag = true;
 	}
 
-	console.log(JSON.stringify(prob));
-
-	data["probabilities"] = JSON.stringify(prob)
+	data["complexities"] = JSON.stringify(prob)
 	data["action_weights"] = actions.join(":")
 	data["max_payout"] = maxPayout
 	data["polygons"] = data["polygons"].join("")
