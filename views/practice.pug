@@ -4,7 +4,7 @@ include includes/test.pug
 
 block content
 	div#welcome
-		+board(settings, prob)
+		+board(settings, 0)
 
 	script.
 		function advance() {
@@ -21,7 +21,7 @@ block content
 
 		for (var i = 0; i < actions.length; ++i) {
 			actions[i].addEventListener("click", function(e) {
-				alert("There were more " + shape_names[maxShape] + "-sided shapes. Your payout would have been: $" + payouts[e.target.dIndex][maxShape])
+				alert("There were more " + shape_names[maxShape] + "-sided shapes. Your payout would have been: $" + payouts[e.target.dIndex][maxShape].payout)
 				advance()
 			}, false);
 			actions[i].dIndex = i;

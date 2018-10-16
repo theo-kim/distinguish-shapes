@@ -16,6 +16,7 @@ router.get('/', (req, res, next) => {
 			var totalCorrect = 0;
 
 			for (var i = 0; i < rounds.length; ++i) {
+				var table = settings.getTableForRound(i + 1);
 				var polygons = rounds[i].polygons.split(",");
 				for (var j = 0; j < polygons.length; ++j) {
 					polygons[j] = parseInt(polygons[j].replace("[", "").replace("]", ""));
@@ -24,7 +25,7 @@ router.get('/', (req, res, next) => {
 				polygons.pop()
 				polygons.shift()
 				// check if the user got their selection correct
-				totalCorrect += (settings.correct[parseInt(rounds[i].selection)] ==
+				totalCorrect += (settings.correct[table][parseInt(rounds[i].selection)] ==
 					polygons.indexOf(Math.max(...polygons)));
 			}
 

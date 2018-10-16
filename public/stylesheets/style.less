@@ -12,6 +12,24 @@ body {
 	font: @default-font-size "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
+#flash {
+	animation: flash 0.2s forwards;
+	display: none;
+}
+
+@keyframes flash {
+	from {
+		opacity: 1;
+	}
+	99% {
+		opacity: 0;
+		top: 0;
+	}
+	to {
+		top: 100%;
+	}
+}
+
 #timedate {
 	text-align: center;
 	a { text-decoration: none; cursor: default; font-size: 24px; }

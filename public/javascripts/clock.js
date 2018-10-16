@@ -6,15 +6,22 @@ Number.prototype.pad = function(n) {
 var running = false;
 
 function updateClock() {
-  var now = new Date();
+  // var now = new Date();
+  /*
   var milli = now.getMilliseconds(),
     sec = now.getSeconds(),
     min = now.getMinutes(),
     hou = now.getHours()
     corr = [hou.pad(2), min.pad(2), sec.pad(2), milli];
-    var tags = ["h", "m", "s", "mi"]
-  	for (var i = 0; i < tags.length; i++)
-    	document.getElementById(tags[i]).firstChild.nodeValue = corr[i] + ((i + 1 == tags.length) ? "" : ":");
+    */
+    var tags = [/*"h", "m", "s", */"mi"]
+    for (var i = 0; i < tags.length; i++) {
+      document.getElementById(tags[i]).firstChild.nodeValue = parseInt(document.getElementById(tags[i]).firstChild.nodeValue) + 1;
+      if (parseInt(document.getElementById(tags[i]).firstChild.nodeValue) > 30) {
+        document.getElementById(tags[i]).firstChild.nodeValue = 1;
+      }
+    }
+    //corr[i] + ((i + 1 == tags.length) ? "" : ":");
     if (running) 
       setTimeout(updateClock, 1);
 }

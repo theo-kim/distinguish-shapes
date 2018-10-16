@@ -28,7 +28,7 @@
     "pug": "2.0.0-beta11",
     "serve-favicon": "~2.4.5",
     "uglify-js": "^3.4.9",
-    "underscore": "^1.8.3",
+    "underscore": "^1.9.1",
     "xml-parse": "^0.3.1"
   },
   "devDependencies": {

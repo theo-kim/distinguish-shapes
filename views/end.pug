@@ -10,6 +10,8 @@ block content
 	script.
 		document.querySelector('#start').style.display = "none";
 		document.querySelector('#stop').addEventListener("click", function() {
-			var roll = (parseInt(document.querySelector("#mi").innerHTML) % 100)
-			$.post('/api/end', {roll: roll}, () => {location = "/result"});
+			setTimeout(() => {
+				var roll = (parseInt(document.querySelector("#mi").innerHTML)) - 1;
+				$.post('/api/end', {roll: roll}, () => {setTimeout(() => location = "/result", 1000)});
+			}, 1000)
 		});

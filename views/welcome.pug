@@ -10,15 +10,15 @@ block content
 		each line, index in text
 			- if (index == 1)
 				div(id="hidden-" + index, style="display:none; margin-bottom: 50px;")
-					p= line
+					p!= line
 					div(style="text-align:center;")
 						each type in settings.shapes
 							+shape(type)
 			- else if (index == 2)
 				div(id="hidden-" + index, style="display:none")
-					p= line
+					p!= line
 					div(style="text-align:center; padding:30px; border: 1px solid #000; margin-bottom: 50px")
-						- for (var i = 0; i < settings.total_n; ++i)
+						- for (var i = 0; i < settings["total_n"]; ++i)
 							- if (i > 0 && i % 8 == 0)
 								br
 							+shape(settings.shapes[Math.floor(Math.random() * settings.n)])
@@ -26,7 +26,10 @@ block content
 				div(id="hidden-" + index, style="display:none; margin-bottom: 50px")
 					p!= line
 					br
-					+table(settings)
+					h3 Payout Table for Rounds 1 - 15
+					+table(settings, 1, 0)
+					h3 Payout Table for Rounds 16 - 30
+					+table(settings, 1, 1)
 			- else if (index == 8)
 				div(id="hidden-" + index, style="display:none;margin-bottom: 50px")
 					p!= line
@@ -34,7 +37,6 @@ block content
 			- else if (index == 9)
 				div(id="hidden-" + index, style="display:none;margin-bottom: 50px")
 					p!= line
-					+probabilities(settings.probabilities)
 			- else if (index == 11)
 				div(id="hidden-" + index, style="display:none;margin-bottom: 50px")
 					p!= line

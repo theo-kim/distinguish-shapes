@@ -3,20 +3,18 @@ extends layout
 //- Main content
 block content
 	include includes/test.pug
+	div#flash(style="position:absolute;top:0; left:0;bottom: 0;right:0; background:#000;display:block")
+
 	div#welcome
 		h4(style="text-align: center") Round <b>#{round}</b> of <b>#{settings.rounds}</b>
-		+board(settings, prob)
+		+board(settings, type)
 				
 	script.
 		var block = false;
 
 		function advance() {
 			var curr = parseInt($.cookie("round"));
-			var sprob = JSON.parse($.cookie("probs"));
-			sprob[#{prob}] -= 1;
 			$.cookie("round", curr + 1);
-			$.cookie("probs", JSON.stringify(sprob));
-			console.log(JSON.parse($.cookie("probs")));
 			location.reload();
 		}
 
@@ -33,10 +31,10 @@ block content
 			actions[i].addEventListener("click", function(e) {
 				var data = {
 					selection: e.target.dIndex,
-					payout: payouts[e.target.dIndex][maxShape],
+					payout: payouts[e.target.dIndex][maxShape].payout,
 					polygons: JSON.stringify(polygon_numbers),
-					prob: #{prob},
-					mudding: mudding 
+					mudding: mudding,
+					table: #{type}
 				}
 				if (!block) {
 					block = true;

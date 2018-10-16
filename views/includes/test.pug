@@ -1,21 +1,11 @@
 include polygons.pug
 
-mixin probabilities(p)
-	div(style="display:flex; flex-direction: column; justify-content:center; align-items:center; margin: 20px 0")
-		table#table
-			thead
-				th(style="text-align:right; background:#888; font-weight:normal;") Probability of being<br>selected for final payment
-				td(style="background:#888") Number of rounds
-			tbody.prob-table
-				each prob, i in p
-					tr 
-						td(style="text-align:right") <span class='prob-cell'>#{prob.prob}</span> %
-						td(style="text-align:center") <span class='prob-n-cell'>#{prob.n}</span>
-
-mixin table(settings, scale)
+mixin table(settings, scale, part)
 	- scale = scale || 1.0
+	- if (part == null || part == undefined || part == -1) part = 0;
 	div(style="display: flex; align-items: center; justify-content: center; flex-direction:row; transform: scale(" + scale + "); margin-bottom: 20px;")
-		- weights = settings["action_weights"]
+		- weights = settings["action_weights"][part]
+		- console.log(';w', part)
 		span(style="margin-right: 10px") The most common shape.
 		div(style="display: flex; align-items: center; justify-content: center; flex-direction:column")
 			span(style="margin-bottom: 10px") The action you choose.
@@ -28,19 +18,13 @@ mixin table(settings, scale)
 				each shape, i in settings.true_shapes
 					tr
 						td=shape+"-sided"
-						td(style="text-align:center;") $<span class="weight-cell">#{weights[0][i]}</span>
-						td(style="text-align:center;") $<span class="weight-cell">#{weights[1][i]}</span>
-						td(style="text-align:center;") $<span class="weight-cell">#{weights[2][i]}</span>
+						td(style="text-align:center;") $<span class="weight-cell">#{weights[0][i].payout}</span>
+						td(style="text-align:center;") $<span class="weight-cell">#{weights[1][i].payout}</span>
+						td(style="text-align:center;") $<span class="weight-cell">#{weights[2][i].payout}</span>
 
-mixin board(settings, prob)
-	+table(settings, 0.8)
-
-	- if (prob > -1)
-		div(style="text-align:center; margin-bottom: 20px;") This round has a 
-			b #{prob}%&nbsp;
-			| chance of being selected for final payment.
-			br
-			| In case it is selected for final payment, payoffs are determined by the table above depending on your action and on which of the three shapes are most common 
+mixin board(settings, type)
+	- if (type == undefined || type == null) type = 0
+	+table(settings, 0.8, type)
 
 	div(style="display:flex; flex-direction: row; align-items: center; justify-content: space-between; padding: 30px 100px")
 		span#action-a.actions(style="background:#ddd; padding: 5px; border-radius: 4px; cursor: pointer") Action A
@@ -77,6 +61,7 @@ mixin board(settings, prob)
 				--remainder;
 			}
 		- var polygon_n_str = JSON.stringify(polygon_n)
+		- console.log(polygon_n)
 		- var true_shapes_str = JSON.stringify(settings.true_shapes)
 		- for (var i = 0; i < settings.total_n; ++i)
 
@@ -88,16 +73,12 @@ mixin board(settings, prob)
 			- }
 			- polygon_n[selected_poly]--;
 			+shape(settings.shapes[selected_poly])
-	- if (prob > -1)
-		div(style="text-align:center; margin-top: 20px;margin-bottom: 20px;") This round has a 
-			b #{prob}%&nbsp;
-			| chance of being selected for final payment.
 
 	script.
 		var polygon_numbers = !{polygon_n_str}
 		var shape_names = !{true_shapes_str}
 		var mudding = !{d_mud}
-		var nums = !{JSON.stringify(settings["action_weights"])}
+		var nums = !{JSON.stringify(settings["action_weights"][type])}
 		console.log(mudding)
 		
 	//- script(src="/javascripts/test.js")

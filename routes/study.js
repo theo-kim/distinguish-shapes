@@ -10,30 +10,17 @@ router.get('/', (req, res, next) => {
 	}
 	else {
 		settingsM().then(function(settings) {
-			console.log(req.cookies.probs)
-			if (parseInt(req.cookies.round) > settings.rounds) { 
+			var currentRound = parseInt(req.cookies.round);
+			if (currentRound > settings.rounds) { 
 				res.redirect('/end');
 			}
 			else {
-				var choices = {}
-				if (!req.cookies.probs || parseInt(req.cookies.probs) == 0) {
-					for (var i = 0; i < settings.probabilities.length; ++i) {
-						choices[settings.probabilities[i].prob] = settings.probabilities[i].n;
-					}
-				}
-				else choices = JSON.parse(req.cookies.probs)
-				res.cookie('round_start', (new Date()).toString(), { maxAge : 8.64e7 });
-				var prob = 0;
-				var probs = Object.keys(choices);
-								console.log(choices)
+				var type = settings.getTableForRound(currentRound);
 
-				do {
-					prob = Math.floor(Math.random() * probs.length)
-				} while (choices[probs[prob]] <= 0)
-				res.cookie('probs', JSON.stringify(choices));
+				res.cookie('round_start', (new Date()).toString(), { maxAge : 8.64e7 });
 				res.render('study', {
 					settings: settings,
-					prob: probs[prob],
+					type: type,
 					round: parseInt(req.cookies.round)
 				});
 			}
