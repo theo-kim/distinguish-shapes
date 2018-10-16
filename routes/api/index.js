@@ -34,13 +34,11 @@ router.post("/admin", (req, res, next) => {
 			var updateProbs = [];
 			var queries = [];
 			for (var i = 0; i < rows.length; ++i) {
-				oldProbs.push(rows[i].complex);
+				oldProbs.push(parseInt(rows[i].complex));
 			}
 			for (var i = 0; i < p.length; ++i) {
 				updateProbs.push(parseInt(p[i].complex));
 			}
-			console.log(updateProbs);
-			console.log(rows);
 			for (var i = 0; i < rows.length; ++i) {
 				if (updateProbs.indexOf(parseInt(rows[i].complex)) == -1) {
 					deleteProbs.push(parseInt(rows[i].complex))
@@ -66,7 +64,7 @@ router.post("/admin", (req, res, next) => {
 				}).then(() => { 
 					queries = []
 					for (var i = 0; i < p.length; ++i) {
-						queries.push(db(probTable).update(p[i]).where("complex", parseInt(p[i].prob)));
+						queries.push(db(probTable).update(p[i]).where("complex", parseInt(p[i].complex)));
 					}
 					return Promise.all(queries);
 				}).then(() => { res.send("success"); });
@@ -78,14 +76,14 @@ router.post("/admin", (req, res, next) => {
 				Promise.all(queries).then(() => { 
 					queries = []
 					for (var i = 0; i < p.length; ++i) {
-						queries.push(db(probTable).update(p[i]).where("complex", parseInt(p[i].prob)));
+						queries.push(db(probTable).update(p[i]).where("complex", parseInt(p[i].complex)));
 					}
 					return Promise.all(queries);
 				}).then(() => { res.send("success"); });
 			}
 			else {
 				for (var i = 0; i < p.length; ++i) {
-					queries.push(db(probTable).update(p[i]).where("complex", parseInt(p[i].prob)));
+					queries.push(db(probTable).update(p[i]).where("complex", parseInt(p[i].complex)));
 				}
 				Promise.all(queries).then(() => { res.send("success"); });
 			}
