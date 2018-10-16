@@ -29,7 +29,9 @@ function continueInstr () {
 	if (counter < max) {
 		var c = document.querySelector("#hidden-" + counter)
 		c.style.display = "block";
-		window.scroll(0, document.body.scrollHeight);
+		// console.log(document.body.scrollHeight - (c.getBoundingClientRect().height + ((c - c) * 50)))
+		// console.log(document.body.scrollHeight, '-', window.innerHeight)
+		window.scroll(0, document.body.scrollHeight - (c.getBoundingClientRect().height + ((counter - 1) * 50)));
 	}
 	else window.location = "/practice";
 

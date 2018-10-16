@@ -18,24 +18,41 @@ block content
 				div(id="hidden-" + index, style="display:none")
 					p= line
 					div(style="text-align:center; padding:30px; border: 1px solid #000; margin-bottom: 50px")
-						- for (var i = 0; i < settings.total_n; ++i)
+						- for (var i = 0; i < 8; ++i)
+							- if (i > 0 && i % 8 == 0)
+								br
+							+shape(settings.shapes[Math.floor(Math.random() * settings.n)])
+			- else if (index == 3)
+				div(id="hidden-" + index, style="display:none")
+					p= line
+					div(style="text-align:center; padding:30px; border: 1px solid #000; margin-bottom: 50px")
+						- for (var i = 0; i < 24; ++i)
 							- if (i > 0 && i % 8 == 0)
 								br
 							+shape(settings.shapes[Math.floor(Math.random() * settings.n)])
 			- else if (index == 4)
+				div(id="hidden-" + index, style="display:none")
+					p= line
+					div(style="text-align:center; padding:30px; border: 1px solid #000; margin-bottom: 50px")
+						- for (var i = 0; i < 64; ++i)
+							- if (i > 0 && i % 8 == 0)
+								br
+							+shape(settings.shapes[Math.floor(Math.random() * settings.n)])
+
+			- else if (index == 6)
 				div(id="hidden-" + index, style="display:none; margin-bottom: 50px")
 					p!= line
 					br
 					+table(settings)
-			- else if (index == 8)
+			- else if (index == 10)
 				div(id="hidden-" + index, style="display:none;margin-bottom: 50px")
 					p!= line
-					+board(settings, -1)
+					+board(settings, 24)
 			- else if (index == 9)
 				div(id="hidden-" + index, style="display:none;margin-bottom: 50px")
 					p!= line
-					+probabilities(settings.probabilities)
-			- else if (index == 11)
+					+complexities(settings.complexity)
+			- else if (index == 13)
 				div(id="hidden-" + index, style="display:none;margin-bottom: 50px")
 					p!= line
 					include includes/clock.pug

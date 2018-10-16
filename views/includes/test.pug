@@ -1,15 +1,15 @@
 include polygons.pug
 
-mixin probabilities(p)
+mixin complexities(p)
 	div(style="display:flex; flex-direction: column; justify-content:center; align-items:center; margin: 20px 0")
 		table#table
 			thead
-				th(style="text-align:right; background:#888; font-weight:normal;") Probability of being<br>selected for final payment
+				th(style="text-align:right; background:#888; font-weight:normal;") Total Number of Shapes
 				td(style="background:#888") Number of rounds
 			tbody.prob-table
 				each prob, i in p
 					tr 
-						td(style="text-align:right") <span class='prob-cell'>#{prob.prob}</span> %
+						td(style="text-align:right") <span class='prob-cell'>#{prob.complex}</span> shapes
 						td(style="text-align:center") <span class='prob-n-cell'>#{prob.n}</span>
 
 mixin table(settings, scale)
@@ -32,15 +32,15 @@ mixin table(settings, scale)
 						td(style="text-align:center;") $<span class="weight-cell">#{weights[1][i]}</span>
 						td(style="text-align:center;") $<span class="weight-cell">#{weights[2][i]}</span>
 
-mixin board(settings, prob)
+mixin board(settings, n)
 	+table(settings, 0.8)
 
-	- if (prob > -1)
-		div(style="text-align:center; margin-bottom: 20px;") This round has a 
-			b #{prob}%&nbsp;
-			| chance of being selected for final payment.
+	- if (n > -1)
+		div(style="text-align:center; margin-bottom: 20px;") In total there are 
+			b(style="font-size:25px") #{n}&nbsp;
+			| shapes on the screen.
 			br
-			| In case it is selected for final payment, payoffs are determined by the table above depending on your action and on which of the three shapes are most common 
+			//- | In case it is selected for final payment, payoffs are determined by the table above depending on your action and on which of the three shapes are most common 
 
 	div(style="display:flex; flex-direction: row; align-items: center; justify-content: space-between; padding: 30px 100px")
 		span#action-a.actions(style="background:#ddd; padding: 5px; border-radius: 4px; cursor: pointer") Action A
@@ -51,8 +51,16 @@ mixin board(settings, prob)
 		-
 			var m_start = settings.shapes.indexOf(settings["true_shapes"][0]);
 			var m_end = m_start + settings.m;
-			var d_mud = Math.floor(Math.random() * ((settings["mud_delta"] + 1) - (-1 * settings["mud_delta"])) + (-1 * settings["mud_delta"]));
-			var initial_quantity = Math.round(settings.total_n / settings.n)
+			var d_mud, initial_quantity;
+			if (n == 8) {
+				d_mud = 0;
+				initial_quantity = Math.floor(n / settings.n)
+			}
+			else {
+				d_mud = Math.floor(Math.random() * ((settings["mud_delta"] + 1) - (-1 * settings["mud_delta"])) + (-1 * settings["mud_delta"]));
+				initial_quantity = Math.round(n / settings.n)
+
+			}
 			var polygon_n = new Array(settings.n).fill(0);
 			for (var i = m_start; i < m_end; ++i) {
 				polygon_n[i] = initial_quantity + d_mud;
@@ -66,8 +74,8 @@ mixin board(settings, prob)
 			console.log(midded_poly)
 			var current_sum = polygon_n.reduce((total, num) => { return total + num});
 
-			var decoy_n = Math.floor((settings.total_n - current_sum) / (settings.n - settings.m));
-			var remainder = settings.total_n - (current_sum + decoy_n * (settings.n - settings.m))
+			var decoy_n = Math.floor((n - current_sum) / (settings.n - settings.m));
+			var remainder = n - (current_sum + decoy_n * (settings.n - settings.m))
 			for (var i = 0; i < m_start; ++i) {
 				polygon_n[i] = decoy_n + ((remainder > 0) ? 1 : 0)
 				--remainder;
@@ -77,8 +85,9 @@ mixin board(settings, prob)
 				--remainder;
 			}
 		- var polygon_n_str = JSON.stringify(polygon_n)
+		- console.log(polygon_n)
 		- var true_shapes_str = JSON.stringify(settings.true_shapes)
-		- for (var i = 0; i < settings.total_n; ++i)
+		- for (var i = 0; i < n; ++i)
 
 			- if (i % 8 == 0 && i > 0)
 				br
@@ -88,10 +97,10 @@ mixin board(settings, prob)
 			- }
 			- polygon_n[selected_poly]--;
 			+shape(settings.shapes[selected_poly])
-	- if (prob > -1)
-		div(style="text-align:center; margin-top: 20px;margin-bottom: 20px;") This round has a 
-			b #{prob}%&nbsp;
-			| chance of being selected for final payment.
+	- if (n > -1)
+		div(style="text-align:center; margin-top: 20px;margin-bottom: 20px;") In total there are 
+			b(style="font-size:25px") #{n}&nbsp;
+			| shapes on the screen.
 
 	script.
 		var polygon_numbers = !{polygon_n_str}

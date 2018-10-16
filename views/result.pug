@@ -1,12 +1,15 @@
 extends layout.pug
 
 block content
+	- var ref = ['A', 'B', 'C']
+	- var selection_letter = ref[selection]
 	div#welcome
 		h1 Thank you for participating in this study!
 		h3 Your bonus:
 			span(style="color:#888;font-weight:bold;")="$" + (total + 0.05)
 		- if (round >= 0)
-			h4 This was chosen using round #{round}
+			h4 This was chosen using round #{round}.
+			h4 In round #{round}, the most common shape was #{common} and you selected Action #{selection_letter}.
 		- else
 			h4 You did not qualify for the bonus as you chose the best action in less than 13 / 30 rounds.
 		h3 Survey code:

@@ -15,6 +15,7 @@ function guid() {
 
 var testTable = (process.env.DEBUG) ? 'dev_tests' : 'prod_tests';
 var userTable = (process.env.DEBUG) ? 'dev_participants' : 'prod_participants';
+var roundTable = (process.env.DEBUG) ? 'dev_rounds' : 'prod_rounds';
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
@@ -23,16 +24,16 @@ router.get('/', (req, res, next) => {
 		var totalreturn = req.cookies.payout;
 		db.select(['id', 'surveycode']).from(userTable).where('id', req.cookies['user_id']).first()
 			.then((result) => {
-				db.select('final_payout', 'selected_round').from(testTable).where('id', req.cookies['test_id']).first()
+				db.select('final_payout', 'selected_round', 'polygons', 'selection').from(testTable).join(roundTable, roundTable + '.testid', testTable + '.id').where(testTable + '.id', req.cookies['test_id']).first()
 				.then((t) => {
 					console.log(result)
 					if (!result.surveycode) {
 						db(userTable).update({'surveycode': usercode, }).where('id', result.id)
 							.then((r) => {
-								res.render('result', {code: usercode, total: t["final_payout"], round: t['selected_round']});	
+								res.render('result', {code: usercode, total: t["final_payout"], round: t['selected_round'], polygons: result.polygons, selection: result.selection});	
 							})
 					}
-					else res.render('result', {code: result.surveycode, total: t["final_payout"], round: t['selected_round']});
+					else res.render('result', {code: result.surveycode, total: t["final_payout"], round: t['selected_round'], polygons: result.polygons, selection: result.selection});
 				})
 			});
 	}

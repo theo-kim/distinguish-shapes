@@ -135,7 +135,7 @@ router.post("/round", (req, res, next) => {
 		duration: (new Date()).getTime()- Date.parse(req.cookies["round_start"]),
 		payout: req.body.payout,
 		polygons: req.body.polygons,
-		prob: req.body.prob,
+		complex: req.body.complex,
 		mudding: req.body.mudding
 	}
 
@@ -146,7 +146,7 @@ router.post("/round", (req, res, next) => {
 });
 
 router.post("/end", (req, res, next) => {
-	var roll = req.body.roll;
+	var roll = parseInt(req.body.roll);
 	console.log("roll", roll)
 
 	settingsM().then((settings) => {
@@ -154,29 +154,33 @@ router.post("/end", (req, res, next) => {
 			.where("testid", parseInt(req.cookies["test_id"]))
 			.orderBy("id", "asc")
 			.then((rounds) => {
-			var intervals = [];
-			var counter = 0;
-
-			for (var i = 0; i < rounds.length; ++i) {
-				if (rounds[i].prob) {
-					intervals.push({
-						start: counter,
-						end: counter + rounds[i].prob,
-						payout: rounds[i].payout
-					})
-					counter += rounds[i].prob
-				}
-			}
+			// var intervals = [];
+			// var counter = 0;
+			// var increment = 100 / settings.rounds;
+			// for (var i = 0; i < rounds.length; ++i) {
+			// 	if (rounds[i].prob) {
+			// 		intervals.push({
+			// 			start: counter,
+			// 			end: counter + settings.rounds,
+			// 			payout: rounds[i].payout
+			// 		})
+			// 		counter += 5
+			// 	}
+			// }
+			var selectedRound = rounds[roll];
 
 			var duration = (new Date()).getTime()- Date.parse(req.cookies["start_test"]);
 			var ending = (new Date());
-			for (var i = 0; i < intervals.length; ++i) {
-				if (roll > intervals[i].start && roll <= intervals[i].end) {
-					db(testTable).update({ "selected_round": (i + 1), "final_payout": intervals[i].payout, "duration": duration, ending: ending }).where("id", parseInt(req.cookies["test_id"])).then(() => {
-						res.send("success");
-					});
-				}
-			}
+			db(testTable).update({ "selected_round": (roll + 1), "final_payout": selectedRound.payout, "duration": duration, ending: ending }).where("id", parseInt(req.cookies["test_id"])).then(() => {
+				res.send("success");
+			});
+			// for (var i = 0; i < intervals.length; ++i) {
+			// 	if (roll > intervals[i].start && roll <= intervals[i].end) {
+			// 		db(testTable).update({ "selected_round": (i + 1), "final_payout": selectedRound.payout, "duration": duration, ending: ending }).where("id", parseInt(req.cookies["test_id"])).then(() => {
+			// 			res.send("success");
+			// 		});
+			// 	}
+			// }
 			// res.send("success");
 		});
 	});

@@ -14,7 +14,7 @@ router.get('/', (req, res, next) => {
 				welcometext[i] = welcometext[i].split("{{" + j + "}}").join(settings[j]);
 
 		res.cookie('round', -2, { maxAge : 8.64e7 });
-		res.cookie('probs', 0, { maxAge : 8.64e7 });
+		res.cookie('complexities', 0, { maxAge : 8.64e7 });
 		res.cookie('start', (new Date()).toString(), { maxAge : 8.64e7 });
 		res.render('welcome', { text: welcometext, size: Object.keys(welcometext).length, settings: settings });
 	})

@@ -7,9 +7,9 @@ CREATE TABLE prod_admin (
 	max_delta       int,
 	mid_delta       int,
 	mud_delta       int,
-	action_weights  varchar(20),
-	rounds			int,
-	max_payout		numeric(3, 2)
+	action_weights  varchar(30),
+	rounds          int,
+	max_payout      numeric(4, 2)
 );
 
 CREATE TABLE dev_admin (
@@ -21,9 +21,9 @@ CREATE TABLE dev_admin (
 	max_delta       int,
 	mid_delta       int,
 	mud_delta       int,
-	action_weights  varchar(20),
-	rounds			int,
-	max_payout		numeric(3, 2)
+	action_weights  varchar(30),
+	rounds          int,
+	max_payout      numeric(4, 2)
 );
 
 CREATE TABLE prod_complexity (
@@ -90,7 +90,7 @@ CREATE TABLE prod_rounds (
 	payout          int,
 	selection       int,
 	polygons        varchar(50),
-	prob            int,
+	complex         int,
 	mudding         int,
 	selected_round  int
 );
@@ -102,7 +102,20 @@ CREATE TABLE dev_rounds (
 	payout          int,
 	selection       int,
 	polygons        varchar(50),
-	prob            int,
+	complex         int,
 	mudding         int
 );
+
+--INSERT STATEMENTS for default settings:
+INSERT INTO prod_admin (n, polygons, m, true_polygons, max_delta, mid_delta, mud_delta, action_weights, rounds, max_payout)
+VALUES (5, '0011111000', 3, '0001110000', 2, 1, 2, '10,0,0:0,0,10:2,2,2', 30, 10.00);
+
+INSERT INTO dev_admin (n, polygons, m, true_polygons, max_delta, mid_delta, mud_delta, action_weights, rounds, max_payout)
+VALUES (5, '0011111000', 3, '0001110000', 2, 1, 2, '10,0,0:0,0,10:2,2,2', 30, 10.00);
+
+INSERT INTO prod_complexity (complex, n)
+VALUES (8, 5), (24, 20), (64, 5);
+
+INSERT INTO dev_complexity (complex, n)
+VALUES (8, 5), (24, 20), (64, 5);
 

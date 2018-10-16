@@ -7,7 +7,7 @@ var practiceProbs = require('../data/practice_probs.json');
 router.get('/', (req, res, next) => {
 	if (req.cookies.round &&  parseInt(req.cookies.round) < 1) {
 		settingsM().then((settings) => {
-			res.render('practice', { settings: settings, prob: practiceProbs[parseInt(req.cookies.round) * -1] });
+			res.render('practice', { settings: settings, n: practiceProbs[parseInt(req.cookies.round) * -1] });
 		});
 	}
 	else if (req.cookies.round && parseInt(req.cookies.round) > 0) {

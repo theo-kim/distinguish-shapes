@@ -1,7 +1,7 @@
 var db = require('./db.js');
 
 var adminTable = (process.env.DEBUG) ? 'dev_admin' : 'prod_admin';
-var probTable = (process.env.DEBUG) ? 'dev_prob' : 'prod_prob';
+var probTable = (process.env.DEBUG) ? 'dev_complexity' : 'prod_complexity';
 
 var numRef = 	["zero", "one", "two", "three", "four", "five", "six", "seven",
 				"eight", "nine", "ten", "eleven", "twelve", "thirteen"];
@@ -49,15 +49,13 @@ module.exports = function() {
 	return new Promise((resolve, reject) => {
 		db.select("*").from(adminTable).orderBy('id', 'desc').first()
 		.then((settings) => {
-			db.select("*").from(probTable).orderBy('prob', 'desc').then((prob) => {
-				console.log(adminTable)
-				console.log(settings)
+			db.select("*").from(probTable).orderBy('complex', 'desc').then((complexity) => {
 				settings["n-m"] = settings.n - settings.m;
 				settings["polygons_text"] = translatePolyString(settings.polygons);
 				settings["true_polygons_text"] = translatePolyString(settings["true_polygons"]);
 				settings["shapes"] = shapes(settings.polygons);
 				settings["true_shapes"] = shapes(settings["true_polygons"]);
-				settings.probabilities = prob;
+				settings.complexity = complexity;
 				settings.correct = [null, null, null]
 				settings.correct[0] = 0;
 				settings.correct[1] = 2;

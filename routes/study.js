@@ -10,32 +10,51 @@ router.get('/', (req, res, next) => {
 	}
 	else {
 		settingsM().then(function(settings) {
-			console.log(req.cookies.probs)
 			if (parseInt(req.cookies.round) > settings.rounds) { 
 				res.redirect('/end');
 			}
 			else {
 				var choices = {}
-				if (!req.cookies.probs || parseInt(req.cookies.probs) == 0) {
-					for (var i = 0; i < settings.probabilities.length; ++i) {
-						choices[settings.probabilities[i].prob] = settings.probabilities[i].n;
+				var clean_choices = {}
+
+				if (!req.cookies.complexities || parseInt(req.cookies.complexities) == 0) {
+					for (var i = 0; i < settings.complexity.length; ++i) {
+						choices[settings.complexity[i].complex] = settings.complexity[i].n;
+						clean_choices[settings.complexity[i].complex] = settings.complexity[i].n;
 					}
 				}
-				else choices = JSON.parse(req.cookies.probs)
+				else {
+					choices = JSON.parse(req.cookies.complexities);
+					clean_choices = JSON.parse(req.cookies.complexities);
+				}
 				res.cookie('round_start', (new Date()).toString(), { maxAge : 8.64e7 });
-				var prob = 0;
 				var probs = Object.keys(choices);
-								console.log(choices)
 
-				// Change weights
-				do {
-					prob = Math.floor(Math.random() * probs.length)
-				} while (choices[probs[prob]] <= 0)
+				// get total rounds remaining and create Array of that length
+				var remaining = parseInt(settings.rounds) - parseInt(req.cookies.round);
+				var selectFrom = new Array(remaining);
+				var j = 0;
 
-				res.cookie('probs', JSON.stringify(choices));
+				// Populate values in selection array
+				for (let i = 0; i < probs.length; ++i) {
+					while (choices[probs[i]] > 0) {
+						selectFrom[j] = probs[i];
+						--choices[probs[i]];
+						++j;
+					}
+				}
+
+				// Select from selection array randomly
+				var selectedComplexity = selectFrom[Math.round(Math.random() * remaining)];
+				console.log('from', selectFrom);
+				console.log('prob', selectedComplexity);
+
+				// --clean_choices[selectedComplexity];
+				res.cookie('complexities', JSON.stringify(clean_choices));
+				
 				res.render('study', {
 					settings: settings,
-					prob: probs[prob],
+					prob: selectedComplexity,
 					round: parseInt(req.cookies.round)
 				});
 			}
