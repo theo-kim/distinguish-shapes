@@ -26,18 +26,20 @@ block content
 				div(id="hidden-" + index, style="display:none; margin-bottom: 50px")
 					p!= line
 					br
-					h3 Payout Table for Rounds 1 - 15
 					+table(settings, 1, 0)
-					h3 Payout Table for Rounds 16 - 30
-					+table(settings, 1, 1)
-			- else if (index == 8)
-				div(id="hidden-" + index, style="display:none;margin-bottom: 50px")
+			- else if (index == 5)
+				div(id="hidden-" + index, style="display:none; margin-bottom: 50px")
 					p!= line
-					+board(settings, -1)
+					br
+					+table(settings, 1, 1)
 			- else if (index == 9)
 				div(id="hidden-" + index, style="display:none;margin-bottom: 50px")
 					p!= line
-			- else if (index == 11)
+					+board(settings, -1)
+			- else if (index == 10)
+				div(id="hidden-" + index, style="display:none;margin-bottom: 50px")
+					p!= line
+			- else if (index == 12)
 				div(id="hidden-" + index, style="display:none;margin-bottom: 50px")
 					p!= line
 					include includes/clock.pug
