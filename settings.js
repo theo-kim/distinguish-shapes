@@ -49,7 +49,7 @@ module.exports = function() {
 	return new Promise((resolve, reject) => {
 		db.select("*").from(adminTable).orderBy('id', 'desc').first()
 		.then((settings) => {
-			db.select("*").from(probTable).orderBy('complex', 'desc').then((complexity) => {
+			db.select("*").from(probTable).orderBy('complex', 'inc').then((complexity) => {
 				settings["n-m"] = settings.n - settings.m;
 				settings["polygons_text"] = translatePolyString(settings.polygons);
 				settings["true_polygons_text"] = translatePolyString(settings["true_polygons"]);
@@ -60,6 +60,10 @@ module.exports = function() {
 				settings.correct[0] = 0;
 				settings.correct[1] = 2;
 				settings.correct[2] = 1;
+
+				for (var i = 0; i < settings.complexity.length; ++i) {
+					settings["num_" + (i + 1)] = settings.complexity[i].complex;
+				}
 
 				var actions = settings["action_weights"].split(':')
 				for (var i = 0; i < actions.length; ++i)

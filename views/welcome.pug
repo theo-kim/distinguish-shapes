@@ -10,13 +10,13 @@ block content
 		each line, index in text
 			- if (index == 1)
 				div(id="hidden-" + index, style="display:none; margin-bottom: 50px;")
-					p= line
+					p!= line
 					div(style="text-align:center;")
 						each type in settings.shapes
 							+shape(type)
 			- else if (index == 2)
 				div(id="hidden-" + index, style="display:none")
-					p= line
+					p!= line
 					div(style="text-align:center; padding:30px; border: 1px solid #000; margin-bottom: 50px")
 						- for (var i = 0; i < 8; ++i)
 							- if (i > 0 && i % 8 == 0)
@@ -24,7 +24,7 @@ block content
 							+shape(settings.shapes[Math.floor(Math.random() * settings.n)])
 			- else if (index == 3)
 				div(id="hidden-" + index, style="display:none")
-					p= line
+					p!= line
 					div(style="text-align:center; padding:30px; border: 1px solid #000; margin-bottom: 50px")
 						- for (var i = 0; i < 24; ++i)
 							- if (i > 0 && i % 8 == 0)
@@ -32,7 +32,7 @@ block content
 							+shape(settings.shapes[Math.floor(Math.random() * settings.n)])
 			- else if (index == 4)
 				div(id="hidden-" + index, style="display:none")
-					p= line
+					p!= line
 					div(style="text-align:center; padding:30px; border: 1px solid #000; margin-bottom: 50px")
 						- for (var i = 0; i < 64; ++i)
 							- if (i > 0 && i % 8 == 0)
