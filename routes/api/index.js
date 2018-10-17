@@ -65,6 +65,10 @@ router.post("/admin", (req, res, next) => {
 	})
 });
 
+router.get("/clock", (req, res, next) => {
+	settingsM().then(settings => res.send("" + settings.rounds))
+});
+
 router.post("/participant", (req, res, next) => {
 	iplocation(req.connection.remoteAddress, function (error, ip) {
 		var city, country;

@@ -27,6 +27,8 @@ mixin board(settings, type)
 	br
 	+table(settings, 1, type)
 	br
+	b 
+		center Reward Scheme #{type + 1}
 	div(style="display:flex; flex-direction: row; align-items: center; justify-content: space-between; padding: 30px 100px")
 		span#action-a.actions(style="background:#ddd; padding: 5px; border-radius: 4px; cursor: pointer") Action A
 		span#action-b.actions(style="background:#ddd; padding: 5px; border-radius: 4px; cursor: pointer") Action B
@@ -75,6 +77,10 @@ mixin board(settings, type)
 			- polygon_n[selected_poly]--;
 			+shape(settings.shapes[selected_poly])
 
+	br
+	b 
+		center Reward Scheme #{type + 1}
+		
 	script.
 		var polygon_numbers = !{polygon_n_str}
 		var shape_names = !{true_shapes_str}

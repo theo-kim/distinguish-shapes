@@ -88,13 +88,13 @@ module.exports = function() {
 					var type = 0;
 					for (var i = 0; i < settings["action_weights"].length; ++i) {
 						console.log("start", settings["action_weights"][i][0][0]["start_round"]);
-						if (settings["action_weights"][i][0][0]["start_round"] - 1 <= round && settings["action_weights"][i][0][0]["end_round"] - 1 >= round) {
+						if ((settings["action_weights"][i][0][0]["start_round"]) <= round && (settings["action_weights"][i][0][0]["end_round"]) >= round) {
 							type = settings["action_weights"][i][0][0].tableid - 1;
 						}
 					}
 					return type;
 				}
-				
+				console.log(settings["action_weights"][0][0])
 				resolve(settings);
 			});
 		});

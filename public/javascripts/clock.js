@@ -4,6 +4,7 @@ Number.prototype.pad = function(n) {
 };
 
 var running = false;
+var r = 30;
 
 function updateClock() {
   // var now = new Date();
@@ -17,7 +18,7 @@ function updateClock() {
     var tags = [/*"h", "m", "s", */"mi"]
     for (var i = 0; i < tags.length; i++) {
       document.getElementById(tags[i]).firstChild.nodeValue = parseInt(document.getElementById(tags[i]).firstChild.nodeValue) + 1;
-      if (parseInt(document.getElementById(tags[i]).firstChild.nodeValue) > 30) {
+      if (parseInt(document.getElementById(tags[i]).firstChild.nodeValue) > r) {
         document.getElementById(tags[i]).firstChild.nodeValue = 1;
       }
     }
@@ -26,11 +27,16 @@ function updateClock() {
       setTimeout(updateClock, 1);
 }
 
+
 function initClock() {
-  if (!running) {
-    running = true;
-    updateClock();
-  }
+  console.log("init")
+  $.get('/api/clock', {}, (rounds) => {
+    r = rounds;
+    if (!running) {
+      running = true;
+      updateClock();
+    }
+  })
 }
 
 function stopClock() {
