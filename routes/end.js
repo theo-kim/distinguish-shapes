@@ -9,7 +9,7 @@ var testTable = (process.env.DEBUG) ? 'dev_tests' : 'prod_tests';
 /* GET home page. */
 router.get('/', (req, res, next) => {
 	settingsM().then((settings) => {
-		db.select("selected_round").from(testTable).where("id", parseInt(req.cookies["test_id"])).first().then((out) => {
+		db.select("selected_round, final_payout").from(testTable).where("id", parseInt(req.cookies["test_id"])).first().then((out) => {
 			console.log('out', out)
 			if (out['selected_round'] != null)
 				res.redirect('/result')
@@ -39,6 +39,7 @@ router.get('/', (req, res, next) => {
 
 			// record clock time
 			if (totalCorrect < requiredCorrect) {
+				console.log('hello')
 				var duration = (new Date()).getTime()- Date.parse(req.cookies["start_test"]);
 				var ending = (new Date());
 				db(testTable).update({ "selected_round": -1, "final_payout": 0, "duration": duration, ending: ending })
