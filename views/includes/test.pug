@@ -71,7 +71,6 @@ mixin board(settings, n)
 			while (midded_poly == maxed_poly)
 				 midded_poly = Math.floor(Math.random() * (m_end - m_start) + m_start);
 			polygon_n[midded_poly] += settings.mid_delta;
-			console.log(midded_poly)
 			var current_sum = polygon_n.reduce((total, num) => { return total + num});
 
 			var decoy_n = Math.floor((n - current_sum) / (settings.n - settings.m));
@@ -85,6 +84,7 @@ mixin board(settings, n)
 				--remainder;
 			}
 		- var polygon_n_str = JSON.stringify(polygon_n)
+		- console.log(polygon_n)
 		- var true_shapes_str = JSON.stringify(settings.true_shapes)
 		- for (var i = 0; i < n; ++i)
 
@@ -106,7 +106,6 @@ mixin board(settings, n)
 		var shape_names = !{true_shapes_str}
 		var mudding = !{d_mud}
 		var nums = !{JSON.stringify(settings["action_weights"])}
-		console.log(mudding)
 		
 	//- script(src="/javascripts/test.js")
 	//- script.

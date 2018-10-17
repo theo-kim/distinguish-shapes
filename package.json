@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "debug-windows": "cd bin & db.bat & cd ../ & set DEBUG=distinguish-shapes-2 & nodemon ./bin/www",
+    "debug-windows": "cd bin & db.bat & cd ../ & nodemon ./bin/www",
     "debug": "DATABASE_URL=\"$(heroku config:get DATABASE_URL -a distinguish-shapes-2)?ssl=true\" DEBUG=distinguish-shapes-2:* nodemon ./bin/www",
     "postinstall": "./node_modules/bower/bin/bower install",
     "database": "heroku pg:psql -a distinguish-shapes-2"

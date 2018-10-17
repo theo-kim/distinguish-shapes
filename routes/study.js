@@ -47,8 +47,6 @@ router.get('/', (req, res, next) => {
 
 				// Select from selection array randomly
 				var selectedComplexity = selectFrom[Math.round(Math.random() * remaining)];
-				console.log('from', selectFrom);
-				console.log('prob', selectedComplexity);
 
 				res.cookie('complexities', JSON.stringify(clean_choices));
 				

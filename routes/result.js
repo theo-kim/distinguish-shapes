@@ -30,7 +30,11 @@ router.get('/', (req, res, next) => {
 					.where(testTable + '.id', req.cookies['test_id'])
 					.orderBy(roundTable + '.id')
 					.then((t) => {
-						t = t[t[0]["selected_round"] - 1];
+						console.log(t[0])
+						if (t[0]["selected_round"] != -1) 
+							t = t[t[0]["selected_round"] - 1];
+						else 
+							t = t[0];
 						if (!result.surveycode) {
 							db(userTable).update({'surveycode': usercode, }).where('id', result.id)
 								.then((r) => {

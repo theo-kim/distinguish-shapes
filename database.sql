@@ -92,7 +92,7 @@ CREATE TABLE prod_rounds (
 	selection       int,
 	polygons        varchar(50),
 	complex         int,
-	mudding         int,
+	mudding         int
 );
 
 CREATE TABLE dev_rounds (
