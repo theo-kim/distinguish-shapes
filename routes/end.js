@@ -11,7 +11,7 @@ router.get('/', (req, res, next) => {
 	settingsM().then((settings) => {
 		db.select("*").from(roundTable).where("testid", parseInt(req.cookies["test_id"])).then((rounds) => {
 			// THIS IS WHERE TO FIX THRESHOLD VALUE!!!
-			var requiredCorrect = 13;
+			var requiredCorrect = 15;
 			// ///////////////////////////////////////
 			var totalCorrect = 0;
 

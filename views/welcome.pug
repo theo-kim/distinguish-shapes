@@ -44,15 +44,18 @@ block content
 					p!= line
 					br
 					+table(settings)
-			- else if (index == 10)
-				div(id="hidden-" + index, style="display:none;margin-bottom: 50px")
-					p!= line
-					+board(settings, 24)
+
 			- else if (index == 9)
 				div(id="hidden-" + index, style="display:none;margin-bottom: 50px")
 					p!= line
 					+complexities(settings.complexity)
-			- else if (index == 13)
+
+			- else if (index == 11)
+				div(id="hidden-" + index, style="display:none;margin-bottom: 50px")
+					p!= line
+					+board(settings, 24)
+
+			- else if (index == 14)
 				div(id="hidden-" + index, style="display:none;margin-bottom: 50px")
 					p!= line
 					include includes/clock.pug
