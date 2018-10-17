@@ -9,7 +9,13 @@ var testTable = (process.env.DEBUG) ? 'dev_tests' : 'prod_tests';
 /* GET home page. */
 router.get('/', (req, res, next) => {
 	settingsM().then((settings) => {
-		db.select("*").from(roundTable).where("testid", parseInt(req.cookies["test_id"])).then((rounds) => {
+		db.select("selected_round").from(testTable).where("id", parseInt(req.cookies["test_id"])).first().then((out) => {
+			console.log('out', out)
+			if (out['selected_round'] != null)
+				res.redirect('/result')
+			else return db.select("*").from(roundTable).where("testid", parseInt(req.cookies["test_id"]));
+		})
+		.then((rounds) => {
 			// THIS IS WHERE TO FIX THRESHOLD VALUE!!!
 			var requiredCorrect = 15;
 			// ///////////////////////////////////////

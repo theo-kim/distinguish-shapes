@@ -10,10 +10,11 @@ router.get('/', (req, res, next) => {
 	}
 	else {
 		settingsM().then(function(settings) {
-			if (parseInt(req.cookies.round) > settings.rounds) { 
+			var currentRound = parseInt(req.cookies.round);
+			if (currentRound > settings.rounds) { 
 				res.redirect('/end');
 			}
-			else {
+			else if (currentRound > 0) {
 				var choices = {}
 				var clean_choices = {}
 
@@ -49,7 +50,6 @@ router.get('/', (req, res, next) => {
 				console.log('from', selectFrom);
 				console.log('prob', selectedComplexity);
 
-				// --clean_choices[selectedComplexity];
 				res.cookie('complexities', JSON.stringify(clean_choices));
 				
 				res.render('study', {
@@ -57,6 +57,9 @@ router.get('/', (req, res, next) => {
 					prob: selectedComplexity,
 					round: parseInt(req.cookies.round)
 				});
+			}
+			else {
+				res.redirect('/welcome');
 			}
 		});
 	}

@@ -8,10 +8,13 @@ block content
 
 
 	script.
-		document.querySelector('#start').style.display = "none";
-		document.querySelector('#stop').addEventListener("click", function() {
+		var submit = function() {
+			document.querySelector('#stop').removeEventListener("click", submit);
 			setTimeout(() => {
 				var roll = (parseInt(document.querySelector("#mi").innerHTML)) - 1;
 				$.post('/api/end', {roll: roll}, () => {setTimeout(() => location = "/result", 1000)});
 			}, 1000)
-		});
+		};
+
+		document.querySelector('#start').style.display = "none";
+		document.querySelector('#stop').addEventListener("click", submit);
