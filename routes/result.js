@@ -46,7 +46,7 @@ router.get('/', (req, res, next) => {
 		})
 	}
 	else {
-		next();
+		res.redirect('/welcome');
 	}
 });
 

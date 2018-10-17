@@ -14,57 +14,29 @@ function saveSettings() {
 	}
 
 	var cells = document.querySelectorAll(".weight-cell");
-	var actions = [[], [], []];
+	var actions = [];
 	var maxPayout = 0;
 	for (var i = 0; i < cells.length; ++i) {
+		var min = parseInt(document.querySelector("#min-table-" + cells[i].table).value);
+		var max = parseInt(document.querySelector("#max-table-" + cells[i].table).value);
 		if (!(cells[i].value || cells[i].innerHTML)) {
 			alert("You are missing some action weights");
 			flag = true;
 			break;
 		}
-		actions[i % 3].push(cells[i].value || cells[i].innerHTML);
+		actions.push({
+			payout: parseInt(cells[i].value),
+			start_round: min,
+			end_round: max,
+			tableid: parseInt(cells[i].table),
+			action: (i % 3),
+			shape: Math.floor((i / 3) % 3),
+		});
 		if (parseInt(cells[i].value || cells[i].innerHTML) > maxPayout)
 			maxPayout = cells[i].value || cells[i].innerHTML;
 	}
 
-	for (var i = 0; i < actions.length; ++i)
-		actions[i] = actions[i].join(',');
-
-	var pCells = document.querySelectorAll(".prob-cell");
-	var pnCells = document.querySelectorAll(".prob-n-cell");
-	var prob = [];
-	var totalProb = 0;
-	var totalProbN = 0;
-	for (var i = 0; i < pCells.length; ++i) {
-		if ((pCells[i].value || pCells[i].innerHTML) && !(pnCells[i].value || pnCells[i].innerHTML)) {
-			alert("You are missing some probabilities, check the table!");
-			flag = true;
-			break;
-		}
-		else if ((pCells[i].value || pCells[i].innerHTML)) {
-			prob.push({
-				prob: pCells[i].value,
-				n: pnCells[i].value
-			});
-			totalProbN += parseInt(pnCells[i].value)
-			totalProb += parseInt(pnCells[i].value) * parseInt(pCells[i].value)
-		}
-	}
-
-	if (totalProb != 100) {
-		alert("Your probabilities don't add up to a 100%!  They currently add up to: " + totalProb);
-		flag = true;
-	}
-
-	if (totalProbN != data.rounds) {
-		alert("You haven't assigned a probability to each round!");
-		flag = true;
-	}
-
-	console.log(JSON.stringify(prob));
-
-	data["probabilities"] = JSON.stringify(prob)
-	data["action_weights"] = actions.join(":")
+	data["action_weights"] = JSON.stringify(actions)
 	data["max_payout"] = maxPayout
 	data["polygons"] = data["polygons"].join("")
 	data["true_polygons"] = data["true_polygons"].join("")
@@ -99,50 +71,31 @@ function editActions(event) {
 		var d = document.createElement('input');
 		d.value = e.innerHTML;
 		d.type = "text";
-		d.style.width = "30px"
-		d.className = "weight-cell"
+		d.style.width = "30px";
+		d.className = "weight-cell";
+		d.table = e.getAttribute("data-table");
 
 		e.parentNode.replaceChild(d, e);
 	}
 }
 
-function editProbs(event) {
+function newActions(event) {
 	action_saved = false;
-	var cells = document.querySelectorAll(".prob-cell");
-	var cellsN = document.querySelectorAll(".prob-n-cell");
+	var cells = document.querySelectorAll(".weight-cell");
 	for (var i = 0; i < cells.length; ++i) {
 		var e = cells[i];
 		var d = document.createElement('input');
 		d.value = e.innerHTML;
 		d.type = "text";
-		d.style.width = "30px"
-		d.className = "prob-cell"
+		d.style.width = "30px";
+		d.className = "weight-cell";
+		d.table = e.getAttribute("data-table");
 
 		e.parentNode.replaceChild(d, e);
 	}
-	for (var i = 0; i < cellsN.length; ++i) {
-		var e = cellsN[i];
-		var d = document.createElement('input');
-		d.value = e.innerHTML;
-		d.type = "text";
-		d.style.width = "30px"
-		d.className = "prob-n-cell"
-
-		e.parentNode.replaceChild(d, e);
-	}
-}
-
-function newProbs() {
-	var t = document.querySelector(".prob-table");
-	var r = document.createElement("tr");
-	r.innerHTML = "<td style='text-align:right;'><input type='text' style='max-width:30px' class='prob-cell'> %</td><td style='text-align:center;'><input class='prob-n-cell' type='text' style='max-width:30px'></td>";
-
-	t.appendChild(r);
 }
 
 document.getElementById("next").addEventListener("click", saveSettings);
-document.getElementById("editAct").addEventListener("click", editActions);
-document.getElementById("editProb").addEventListener("click", newProbs);
+document.getElementById("editAct").addEventListener("click", newActions);
 
 editActions();
-editProbs();
