@@ -18,14 +18,15 @@ mixin table(settings, scale, part)
 				each shape, i in settings.true_shapes
 					tr
 						td=shape+"-sided"
-						td(style="text-align:center;") $<span class="weight-cell" data-table="#{part}">#{weights[0][i].payout}</span>
-						td(style="text-align:center;") $<span class="weight-cell" data-table="#{part}">#{weights[1][i].payout}</span>
-						td(style="text-align:center;") $<span class="weight-cell" data-table="#{part}">#{weights[2][i].payout}</span>
+						td(style="text-align:center;") $<span style="font-weight:bold" class="weight-cell" data-table="#{part}">#{weights[0][i].payout}</span>
+						td(style="text-align:center;") $<span style="font-weight:bold" class="weight-cell" data-table="#{part}">#{weights[1][i].payout}</span>
+						td(style="text-align:center;") $<span style="font-weight:bold" class="weight-cell" data-table="#{part}">#{weights[2][i].payout}</span>
 
 mixin board(settings, type)
 	- if (type == undefined || type == null) type = 0
-	+table(settings, 0.8, type)
-
+	br
+	+table(settings, 1, type)
+	br
 	div(style="display:flex; flex-direction: row; align-items: center; justify-content: space-between; padding: 30px 100px")
 		span#action-a.actions(style="background:#ddd; padding: 5px; border-radius: 4px; cursor: pointer") Action A
 		span#action-b.actions(style="background:#ddd; padding: 5px; border-radius: 4px; cursor: pointer") Action B

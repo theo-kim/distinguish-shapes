@@ -10,6 +10,7 @@ block content
 		+board(settings, type)
 				
 	script.
+		if (#{changed}) alert("The Payout Table Has Changed.")
 		var block = false;
 
 		function advance() {

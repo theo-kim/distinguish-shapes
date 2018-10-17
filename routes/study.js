@@ -16,12 +16,14 @@ router.get('/', (req, res, next) => {
 			}
 			else if (currentRound <= settings.rounds && currentRound > 0) { 
 				var type = settings.getTableForRound(currentRound);
+				var changed = settings.getTableForRound(currentRound - 1) != type;
 
 				res.cookie('round_start', (new Date()).toString(), { maxAge : 8.64e7 });
 				res.render('study', {
 					settings: settings,
 					type: type,
-					round: parseInt(req.cookies.round)
+					round: parseInt(req.cookies.round),
+					changed: changed
 				});
 			}
 			else {

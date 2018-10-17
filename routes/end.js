@@ -9,7 +9,7 @@ var testTable = (process.env.DEBUG) ? 'dev_tests' : 'prod_tests';
 /* GET home page. */
 router.get('/', (req, res, next) => {
 	settingsM().then((settings) => {
-		db.select("selected_round").from(testTable).where("id", parseInt(req.cookies["test_id"])).first().then((test) => {
+		db.select().from(testTable).where("id", parseInt(req.cookies["test_id"])).first().then((test) => {
 			if (test["selected_round"] == null)
 				return db.select("*").from(roundTable).where("testid", parseInt(req.cookies["test_id"]))
 			else res.redirect('/result');
