@@ -8,7 +8,8 @@ var userTable = (process.env.DEBUG) ? 'dev_participants' : 'prod_participants';
 var testTable = (process.env.DEBUG) ? 'dev_tests' : 'prod_tests';
 var roundTable = (process.env.DEBUG) ? 'dev_rounds' : 'prod_rounds';
 var adminTable = (process.env.DEBUG) ? 'dev_admin' : 'prod_admin';
-var probTable = (process.env.DEBUG) ? 'dev_prob' : 'prod_prob';
+var tableTable = (process.env.DEBUG) ? 'dev_tables' : 'prod_tables';
+var actionTable = (process.env.DEBUG) ? 'dev_actions' : 'prod_actions';
 
 router.post("/admin", (req, res, next) => {
 	var data = {
@@ -20,76 +21,46 @@ router.post("/admin", (req, res, next) => {
 		"max_delta": req.body["max_delta"],
 		"mid_delta": req.body["mid_delta"],
 		"mud_delta": req.body["mud_delta"],
-		"action_weights": req.body["action_weights"],
 		rounds: req.body.rounds,
 		"max_payout": req.body["max_payout"]
 	}
 
-	var p = JSON.parse(req.body.probabilities);
-
+	var actions = JSON.parse(req.body["action_weights"]);
+	var tables = [];
+	var actionWheres = [];
+	var tableQueries = [];
+	var actionQueries = [];
 	db(adminTable).insert(data).returning('id').then((id) => {
-		db.select("*").from(probTable).orderBy('prob', 'desc').then((rows) => {
-			var newProbs = [];
-			var deleteProbs = [];
-			var oldProbs = [];
-			var updateProbs = [];
-			var queries = [];
-			for (var i = 0; i < rows.length; ++i) {
-				oldProbs.push(rows[i].prob);
+		for (var i = 0; i < actions.length; ++i) {
+			if (!(actions[i].tableid in tables)) {
+				tables.push({ 
+								start_round: actions[i]["start_round"],
+								end_round: actions[i]["end_round"]
+							});
 			}
-			for (var i = 0; i < p.length; ++i) {
-				updateProbs.push(parseInt(p[i].prob));
-			}
-			console.log(updateProbs);
-			console.log(rows);
-			for (var i = 0; i < rows.length; ++i) {
-				if (updateProbs.indexOf(parseInt(rows[i].prob)) == -1) {
-					deleteProbs.push(rows[i].prob)
-				}
-			}
-			for (var i = 0; i < p.length; ++i) {
-				if (oldProbs.indexOf(parseInt(p[i].prob)) == -1) {
-					newProbs.push(p[i])
-				}
-			}
-			if (newProbs.length > 0)
-				db(probTable).insert(newProbs).then(() => {
-					if (deleteProbs.length > 0) {
-						queries = []
-						for (var i = 0; i < deleteProbs.length; ++i) {
-							queries.push(db(probTable).delete().where("prob", parseInt(deleteProbs[i])));
-						}
-						return Promise.all(queries);
-					}
-					else {
-						return Promise.resolve();
-					}
-				}).then(() => { 
-					queries = []
-					for (var i = 0; i < p.length; ++i) {
-						queries.push(db(probTable).update(p[i]).where("prob", parseInt(p[i].prob)));
-					}
-					return Promise.all(queries);
-				}).then(() => { res.send("success"); });
-			else if (deleteProbs.length > 0) {
-				queries = []
-				for (var i = 0; i < deleteProbs.length; ++i) {
-					queries.push(db(probTable).delete().where("prob", parseInt(deleteProbs[i])));
-				}
-				Promise.all(queries).then(() => { 
-					queries = []
-					for (var i = 0; i < p.length; ++i) {
-						queries.push(db(probTable).update(p[i]).where("prob", parseInt(p[i].prob)));
-					}
-					return Promise.all(queries);
-				}).then(() => { res.send("success"); });
-			}
-			else {
-				for (var i = 0; i < p.length; ++i) {
-					queries.push(db(probTable).update(p[i]).where("prob", parseInt(p[i].prob)));
-				}
-				Promise.all(queries).then(() => { res.send("success"); });
-			}
+			actionWheres.push({
+								action: actions[i]["action"],
+								shape: actions[i]["shape"],
+								tableid: actions[i]["tableid"] + 1
+							})
+			delete actions[i]["start_round"];
+			delete actions[i]["end_round"];
+			delete actions[i]["action"];
+			delete actions[i]["shape"];
+			delete actions[i]["tableid"];
+		}
+		for (var i = 0; i < tables.length; ++i) {
+			tableQueries.push(db(tableTable).update(tables[i]).where("id", i + 1))
+		}
+		for (var i = 0; i < actions.length; ++i) {
+			console.log(actionWheres[i])
+			actionQueries.push(db(actionTable).update(actions[i]).where(actionWheres[i]));
+		}
+		Promise.all(tableQueries).then((done) => {
+			Promise.all(actionQueries).then((actionDone) => {
+				console.log(actionDone)
+				res.send("success");
+			})
 		})
 	})
 });

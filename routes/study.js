@@ -14,7 +14,7 @@ router.get('/', (req, res, next) => {
 			if (currentRound > settings.rounds) { 
 				res.redirect('/end');
 			}
-			else {
+			else if (currentRound <= settings.rounds && currentRound > 0) { 
 				var type = settings.getTableForRound(currentRound);
 
 				res.cookie('round_start', (new Date()).toString(), { maxAge : 8.64e7 });
@@ -23,6 +23,9 @@ router.get('/', (req, res, next) => {
 					type: type,
 					round: parseInt(req.cookies.round)
 				});
+			}
+			else {
+				res.redirect('/welcome')
 			}
 		});
 	}

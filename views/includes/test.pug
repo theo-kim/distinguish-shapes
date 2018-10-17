@@ -18,9 +18,9 @@ mixin table(settings, scale, part)
 				each shape, i in settings.true_shapes
 					tr
 						td=shape+"-sided"
-						td(style="text-align:center;") $<span class="weight-cell">#{weights[0][i].payout}</span>
-						td(style="text-align:center;") $<span class="weight-cell">#{weights[1][i].payout}</span>
-						td(style="text-align:center;") $<span class="weight-cell">#{weights[2][i].payout}</span>
+						td(style="text-align:center;") $<span class="weight-cell" data-table="#{part}">#{weights[0][i].payout}</span>
+						td(style="text-align:center;") $<span class="weight-cell" data-table="#{part}">#{weights[1][i].payout}</span>
+						td(style="text-align:center;") $<span class="weight-cell" data-table="#{part}">#{weights[2][i].payout}</span>
 
 mixin board(settings, type)
 	- if (type == undefined || type == null) type = 0

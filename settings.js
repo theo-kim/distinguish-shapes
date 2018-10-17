@@ -92,13 +92,9 @@ module.exports = function() {
 							type = settings["action_weights"][i][0][0].tableid - 1;
 						}
 					}
-					console.log('t', type)
 					return type;
 				}
-
-				console.log(settings)
-				// console.log(settings['action_weights'][1])
-
+				
 				resolve(settings);
 			});
 		});

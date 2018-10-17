@@ -33,21 +33,36 @@ block content
 								label(for=(setting.length - i) + "-check") &nbsp;&nbsp;#{(setting.length - i)}-sided shape
 								br
 				- else if (key == "action_weights")
-					td=key
-					td
-						+table(settings, 0.9)
-					td 
-							button#editAct Clear Action Weights
-							br
-							br
-							p(style="width: 250px;white-space:normal;") If you want to add a shape (row) to the table, add a shape above, save the settings and then add the new action weights.
+					tr
+						td(colspan="3", style="text-align:center;font-weight:bold;background:#888; color:#eee; padding: 5px;") Action Tables
+					- for (var i = 0; i < setting.length; ++i)
+						tr
+							td(colspan="2")
+								+table(settings, 0.9, i)
+							td 
+								// button#editAct Clear Action Weights
+								// br
+								b Start Round (inclusive)
+								br
+								input(class="s-in", id="min-table-" + i, type="text", value=setting[i][0][0].start_round, placeholder=key, data-key=key)
+								br
+								br
+								b End Round (inclusive)
+								br
+								input(class="s-in", id="max-table-" + i, type="text", value=setting[i][0][0].end_round, placeholder=key, data-key=key)
+								br
+					tr
+						td(colspan="3", style="text-align:center;background:#fff; color:#000; padding: 5px;")
+							button#editAct New Action Table
 				- else if (key == "probabilities")
 					td=key
 					td
 						+probabilities(setting)
 					td 
-							button#editProb Add New Probability
-				- else if (key == "shapes" || key == "true_shapes")
+						button#editProb Add New Probability
+				- else if (key == "shapes" || key == "true_shapes" || key == "correct")
+					-console.log('hello');
+				- else if (typeof setting == "function")
 					-console.log('hello');
 				- else
 					tr

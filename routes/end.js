@@ -9,7 +9,12 @@ var testTable = (process.env.DEBUG) ? 'dev_tests' : 'prod_tests';
 /* GET home page. */
 router.get('/', (req, res, next) => {
 	settingsM().then((settings) => {
-		db.select("*").from(roundTable).where("testid", parseInt(req.cookies["test_id"])).then((rounds) => {
+		db.select("selected_round").from(testTable).where("id", parseInt(req.cookies["test_id"])).first().then((test) => {
+			if (test["selected_round"] == null)
+				return db.select("*").from(roundTable).where("testid", parseInt(req.cookies["test_id"]))
+			else res.redirect('/result');
+		})
+		.then((rounds) => {
 			// THIS IS WHERE TO FIX THRESHOLD VALUE!!!
 			var requiredCorrect = 13;
 			// ///////////////////////////////////////
@@ -29,8 +34,6 @@ router.get('/', (req, res, next) => {
 					polygons.indexOf(Math.max(...polygons)));
 			}
 
-			console.log("Total Correct: ", totalCorrect);
-
 			if (totalCorrect < requiredCorrect) {
 				var duration = (new Date()).getTime()- Date.parse(req.cookies["start_test"]);
 				var ending = (new Date());
@@ -41,8 +44,6 @@ router.get('/', (req, res, next) => {
 					});
 			}
 			else res.render('end');
-
-
 		});
 	});
 });
