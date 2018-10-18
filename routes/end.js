@@ -16,7 +16,7 @@ router.get('/', (req, res, next) => {
 		})
 		.then((rounds) => {
 			// THIS IS WHERE TO FIX THRESHOLD VALUE!!!
-			var requiredCorrect = 6;
+			var requiredCorrect = 13;
 			// ///////////////////////////////////////
 			var totalCorrect = 0;
 
