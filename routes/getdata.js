@@ -25,7 +25,7 @@ settingsM().then(function(settings) {
 			.orderBy(r + '.id', 'asc')
 			.then((rows) => {
 				columnLabel = [
-					"testid", "round", "test_duration", "round_duration", "mudding", "selection", "probability", "age", "gender", "final_payout", "surveycode", "welcome_time", "ipaddress", "city", "country", "start", "ending", "selected_round"  
+					"testid", "round", "test_duration", "round_duration", "mudding", "selection", "used_table", "age", "gender", "final_payout", "surveycode", "welcome_time", "ipaddress", "city", "country", "start", "ending", "selected_round"  
 				]
 				for (let i = 0; i < rows.length; ++i) {
 					if (roundStarts[rows[i]['testid']] == null) roundStarts[rows[i]['testid']] = 1;
