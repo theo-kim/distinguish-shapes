@@ -34,7 +34,7 @@ block content
 				div(id="hidden-" + index, style="display:none")
 					p!= line
 					div(style="text-align:center; padding:30px; border: 1px solid #000; margin-bottom: 50px")
-						- for (var i = 0; i < 64; ++i)
+						- for (var i = 0; i < 80; ++i)
 							- if (i > 0 && i % 8 == 0)
 								br
 							+shape(settings.shapes[Math.floor(Math.random() * settings.n)])
